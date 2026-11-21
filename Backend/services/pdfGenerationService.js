@@ -6,6 +6,7 @@ const formatCurrency = require('../utils/formatCurrency');
 const { formatDate } = require('../utils/dateFormatter');
 const logger = require('../utils/logger');
 const { AJAY_GLASS_HEADER_BASE64 } = require('../config/ajayGlassHeader');
+const { AJAY_GLASS_LOGOS_BASE64 } = require('../config/ajayGlassLogos');
 
 /**
  * Builds the complete HTML string for the exact two-page Proforma Invoice layout.
@@ -132,7 +133,15 @@ const renderInvoiceHtml = (invoice) => {
       </tr>
       <tr>
         <td colspan="4" class="pi-box-company-td">
-          <img src="${headerLogoSrc}" class="pi-box-company-img" alt="${company.companyName || 'AJAY GLASS HOUSE'}" />
+          <img src="${AJAY_GLASS_LOGOS_BASE64}" class="pi-company-logo-strip" alt="AJAY GLASS HOUSE" />
+          <div class="pi-company-name-text">${companyName}</div>
+          <div class="pi-company-address-text">${company.address || 'Opp Jain Mandir, Khor Darwaja, Delhi Road, Jaipur – 302028'}</div>
+          <div class="pi-company-info-row">
+            <span>Tel :${company.phone || '0141-4010049, 9799002852'}</span>
+            <span style="margin-left: 18px;">GSTIN : ${company.gstin || '08AASCS9947B1ZQ.'}</span>
+          </div>
+          <div class="pi-company-info-row">Email :${company.email || 'shreeneelkamalglass@gmail.com'}</div>
+          <div class="pi-company-info-row">Web: :${company.website || 'www.neelkamaltuff.in'}</div>
         </td>
         <td colspan="2" class="pi-box-customer-td">
           <table class="pi-customer-subtable">

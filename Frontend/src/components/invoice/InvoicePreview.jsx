@@ -2,6 +2,7 @@ import React from 'react';
 import { formatCurrency } from '../../utils/currencyFormatter';
 import { formatDate } from '../../utils/dateFormatter';
 import { AJAY_GLASS_HEADER_BASE64 } from '../../assets/ajayGlassHeader';
+import { AJAY_GLASS_LOGOS_BASE64 } from '../../assets/ajayGlassLogos';
 import '../../styles/invoice.css';
 
 const default15Terms = [
@@ -48,10 +49,18 @@ const InvoicePreview = ({ invoice = {}, company = {} }) => {
             <tr>
               <td colSpan="4" className="pi-box-company-td">
                 <img
-                  src={comp.logo || AJAY_GLASS_HEADER_BASE64}
-                  className="pi-box-company-img"
-                  alt={comp.companyName || 'AJAY GLASS HOUSE'}
+                  src={AJAY_GLASS_LOGOS_BASE64}
+                  className="pi-company-logo-strip"
+                  alt="AJAY GLASS HOUSE"
                 />
+                <div className="pi-company-name-text">{compName}</div>
+                <div className="pi-company-address-text">{comp.address || 'Opp Jain Mandir, Khor Darwaja, Delhi Road, Jaipur – 302028'}</div>
+                <div className="pi-company-info-row">
+                  <span>Tel :{comp.phone || '0141-4010049, 9799002852'}</span>
+                  <span style={{ marginLeft: '18px' }}>GSTIN : {comp.gstin || '08AASCS9947B1ZQ.'}</span>
+                </div>
+                <div className="pi-company-info-row">Email :{comp.email || 'shreeneelkamalglass@gmail.com'}</div>
+                <div className="pi-company-info-row">Web: :{comp.website || 'www.neelkamaltuff.in'}</div>
               </td>
               <td colSpan="2" className="pi-box-customer-td">
                 <table className="pi-customer-subtable">
