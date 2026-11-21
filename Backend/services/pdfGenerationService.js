@@ -23,6 +23,8 @@ const renderInvoiceHtml = (invoice) => {
   }
 
   const company = invoice.companySnapshot || {};
+  const companyName = (!company.companyName || company.companyName.includes('BANSAL')) ? 'AJAY GLASS HOUSE' : company.companyName;
+  const accountHolder = (!company.accountHolderName || company.accountHolderName.includes('Bansal')) ? 'Ajay Glass House' : company.accountHolderName;
   const customer = invoice.customerSnapshot || {};
   const glassItems = invoice.glassItems || [];
   const processingItems = invoice.processingItems || [];
@@ -31,7 +33,10 @@ const renderInvoiceHtml = (invoice) => {
   const terms = invoice.termsAndConditionsSnapshot || [];
 
   // Generate Glass Items rows
-  const glassRowsHtml = glassItems.map((item, idx) => `
+  const glassRowsHtml = glassItems.map((item, idx) => {
+    const actAreaVal = Number(item.actualArea || item.actArea || 0);
+    const chrgAreaVal = Number(item.chargeableArea || item.chrgArea || 0);
+    return `
     <tr>
       <td class="text-left font-bold">
         ${item.itemCode ? `<span style="font-weight:700; color:#0f172a; margin-right:4px;">${item.itemCode}</span>` : ''}
@@ -42,14 +47,15 @@ const renderInvoiceHtml = (invoice) => {
       <td class="text-right font-mono">${item.originalWidth !== undefined && item.originalWidth !== null && item.originalWidth !== '' ? item.originalWidth : (item.width || 0)}</td>
       <td class="text-right font-bold">${item.quantity || 0}</td>
       <td class="text-center">${item.unit || 'unit'}</td>
-      <td class="text-right font-mono">${Number(item.actualArea !== undefined ? item.actualArea : (item.actArea || 0)).toFixed(3)}</td>
+      <td class="text-right font-mono">${actAreaVal.toFixed(3)}</td>
       <td class="text-right font-mono">${Number(item.weight || 0).toFixed(2)}</td>
-      <td class="text-right font-bold font-mono">${Number(item.chargeableArea !== undefined ? item.chargeableArea : (item.chrgArea || 0)).toFixed(3)}</td>
+      <td class="text-right font-bold font-mono">${chrgAreaVal.toFixed(3)}</td>
       <td class="text-right font-mono">${Number(item.rate || 0).toFixed(2)}</td>
       <td class="text-center">${item.per || 'Sqft'}</td>
       <td class="text-right font-bold font-mono">${formatCurrency(item.amount)}</td>
     </tr>
-  `).join('');
+  `;
+  }).join('');
 
   // Generate Processing Charges rows
   const processingRowsHtml = processingItems.length > 0
@@ -99,6 +105,12 @@ const renderInvoiceHtml = (invoice) => {
     </div>
   `).join('');
 
+  const headerLogoSrc = company.logo || AJAY_GLASS_HEADER_BASE64;
+  const lUnitUpper = String(invoice.lengthUnit || 'MM').toUpperCase();
+  const aUnitUpper = String(invoice.areaUnit || 'SQM').toUpperCase();
+  const lUnitLabel = lUnitUpper === 'INCH' ? 'inch' : (lUnitUpper === 'CM' ? 'cm' : 'mm');
+  const aUnitLabel = aUnitUpper === 'SQFT' ? 'Sqft' : 'Sqm';
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -113,68 +125,56 @@ const renderInvoiceHtml = (invoice) => {
 
   <!-- ==================== PAGE 1 ==================== -->
   <div class="page">
-    <div class="invoice-title-bar">
-      <h1>PROFORMA INVOICE</h1>
-    </div>
-
-    <!-- Company Details (Left) & Invoice Meta (Right) -->
-    <div class="header-grid">
-      <div class="company-col">
-        <div class="company-name">${company.companyName || 'BANSAL GLASS INDUSTRIES'}</div>
-        ${company.tagline ? `<div class="company-tagline">${company.tagline}</div>` : ''}
-        <div class="company-details-text">
-          <div><strong>Works / Address:</strong> ${company.address || 'Industrial Area, Phase 1'}</div>
-          <div><strong>Phone:</strong> ${company.phone || '+91 98765 43210'} | <strong>Email:</strong> ${company.email || 'info@bansalglass.com'}</div>
-          <div><strong>GSTIN:</strong> ${company.gstin || '07AAAAA0000A1Z5'} | <strong>State:</strong> ${company.state || 'Delhi'} (${company.stateCode || '07'})</div>
-          ${company.cin ? `<div><strong>CIN:</strong> ${company.cin}</div>` : ''}
-        </div>
-      </div>
-      <div class="meta-col">
-        <div class="meta-row">
-          <span class="meta-label">PI Number:</span>
-          <span class="meta-value highlight-value">${invoice.invoiceNumber}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">PI Date:</span>
-          <span class="meta-value">${formatDate(invoice.invoiceDate)}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">PO Number:</span>
-          <span class="meta-value">${invoice.poNumber || 'N/A'}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Delivery Date:</span>
-          <span class="meta-value">${invoice.deliveryDate ? formatDate(invoice.deliveryDate) : 'On Schedule'}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Area Unit:</span>
-          <span class="meta-value">${invoice.areaUnit || 'SQM'}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">Length Unit:</span>
-          <span class="meta-value">${invoice.lengthUnit || 'MM'}</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Customer Information -->
-    <div class="customer-grid">
-      <div class="customer-box left">
-        <div class="section-subheading">Buyer / Bill To:</div>
-        <div class="customer-name">${customer.customerName || 'Customer'}</div>
-        <div class="customer-info-line"><strong>Address:</strong> ${invoice.billingAddress || customer.billingAddress || ''}</div>
-        <div class="customer-info-line"><strong>Contact Person:</strong> ${invoice.contactPerson || customer.contactPerson || 'N/A'}</div>
-        <div class="customer-info-line"><strong>Phone:</strong> ${invoice.contactNumber || customer.phone || 'N/A'}</div>
-        <div class="customer-info-line"><strong>GSTIN:</strong> ${invoice.customerGSTIN || customer.gstin || 'Unregistered'}</div>
-      </div>
-      <div class="customer-box">
-        <div class="section-subheading">Consignee / Ship To:</div>
-        <div class="customer-name">${customer.customerName || 'Customer'}</div>
-        <div class="customer-info-line"><strong>Delivery Address:</strong> ${invoice.deliveryAddress || invoice.billingAddress || customer.deliveryAddress || ''}</div>
-        <div class="customer-info-line"><strong>Expected Delivery:</strong> ${invoice.deliveryDate ? formatDate(invoice.deliveryDate) : 'As agreed'}</div>
-        <div class="customer-info-line"><strong>Place of Supply:</strong> ${customer.state || company.state || 'Delhi'}</div>
-      </div>
-    </div>
+    <!-- Exact Reference PDF Top Header Box (Image 1) -->
+    <table class="pi-header-box">
+      <tr>
+        <td colspan="6" class="pi-box-title">Proforma Invoice</td>
+      </tr>
+      <tr>
+        <td colspan="4" class="pi-box-company-td">
+          <img src="${headerLogoSrc}" class="pi-box-company-img" alt="${company.companyName || 'AJAY GLASS HOUSE'}" />
+        </td>
+        <td colspan="2" class="pi-box-customer-td">
+          <table class="pi-customer-subtable">
+            <tr>
+              <td class="cust-label" style="width: 32%;">Customer :</td>
+              <td class="cust-val font-bold">${customer.customerName || invoice.customer?.customerName || ''}</td>
+            </tr>
+            <tr>
+              <td class="cust-label" style="vertical-align: top;">Billing Address</td>
+              <td class="cust-val">${invoice.billingAddress || customer.billingAddress || ''}</td>
+            </tr>
+            <tr>
+              <td class="cust-label" style="vertical-align: top;">Delivery Address</td>
+              <td class="cust-val">${invoice.deliveryAddress || invoice.billingAddress || customer.deliveryAddress || ''}</td>
+            </tr>
+            <tr>
+              <td class="cust-label">Delivery Date</td>
+              <td class="cust-val">${invoice.deliveryDate ? formatDate(invoice.deliveryDate) : ''}</td>
+            </tr>
+            <tr>
+              <td class="cust-label">Contact Person</td>
+              <td class="cust-val">${invoice.contactPerson || customer.contactPerson || ''}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr class="pi-box-meta-row1">
+        <td class="meta-label-cell" style="width: 12%;">PI. No:</td>
+        <td class="meta-val-cell font-bold" style="width: 17%;">${invoice.invoiceNumber || ''}</td>
+        <td class="meta-label-cell" style="width: 11%;">PO. No:</td>
+        <td class="meta-val-cell" style="width: 13%;">${invoice.poNumber || ''}</td>
+        <td class="cust-meta-label" style="width: 14%;">Tel:</td>
+        <td class="cust-meta-val" style="width: 33%;">${invoice.contactNumber || customer.phone || ''}</td>
+      </tr>
+      <tr class="pi-box-meta-row2">
+        <td class="meta-label-cell">PI. Date:</td>
+        <td class="meta-val-cell">${formatDate(invoice.invoiceDate)}</td>
+        <td colspan="2" class="meta-units-cell font-bold">Area - ${aUnitLabel},  Length - ${lUnitLabel}</td>
+        <td class="cust-meta-label">GSTIN:</td>
+        <td class="cust-meta-val">${invoice.customerGSTIN || customer.gstin || ''}</td>
+      </tr>
+    </table>
 
     <!-- Glass Items Table (11 Columns) -->
     <div class="table-container">
@@ -340,12 +340,12 @@ const renderInvoiceHtml = (invoice) => {
         </div>
         <div class="bank-row">
           <span class="bank-lbl">Account Holder Name:</span>
-          <span class="bank-val">${company.accountHolderName || company.companyName || 'Bansal Glass Industries'}</span>
+          <span class="bank-val">${accountHolder}</span>
         </div>
       </div>
 
       <div class="signatures-box">
-        <div class="company-sign-title">For ${company.companyName || 'BANSAL GLASS INDUSTRIES'}</div>
+        <div class="company-sign-title">For ${companyName}</div>
         <div class="sign-officers-row">
           <div class="sign-officer">
             <div>${invoice.preparedBy || 'Prepared By'}</div>

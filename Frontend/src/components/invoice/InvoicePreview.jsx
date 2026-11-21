@@ -1,6 +1,7 @@
 import React from 'react';
 import { formatCurrency } from '../../utils/currencyFormatter';
 import { formatDate } from '../../utils/dateFormatter';
+import { AJAY_GLASS_HEADER_BASE64 } from '../../assets/ajayGlassHeader';
 import '../../styles/invoice.css';
 
 const default15Terms = [
@@ -23,6 +24,8 @@ const default15Terms = [
 
 const InvoicePreview = ({ invoice = {}, company = {} }) => {
   const comp = invoice.companySnapshot || company || {};
+  const compName = (!comp.companyName || comp.companyName.includes('BANSAL')) ? 'AJAY GLASS HOUSE' : comp.companyName;
+  const accHolder = (!comp.accountHolderName || comp.accountHolderName.includes('Bansal')) ? 'Ajay Glass House' : comp.accountHolderName;
   const cust = invoice.customerSnapshot || {};
   const glassItems = invoice.glassItems || [];
   const processingItems = invoice.processingItems || [];
@@ -36,85 +39,66 @@ const InvoicePreview = ({ invoice = {}, company = {} }) => {
     <div className="pi-preview-container">
       {/* ================= PAGE 1 ================= */}
       <div className="pi-preview-page">
-        {/* Title */}
-        <div className="pi-title-bar">
-          <h1>PROFORMA INVOICE</h1>
-        </div>
-
-        {/* Company & PI Meta Grid */}
-        <div className="pi-header-grid">
-          <div className="pi-company-col">
-            <div className="pi-company-name">{comp.companyName || 'BANSAL GLASS INDUSTRIES'}</div>
-            {comp.tagline && <div className="pi-company-tagline">{comp.tagline}</div>}
-            <div className="pi-company-text">
-              <div><strong>Works / Address:</strong> {comp.address || 'Plot No. 42-43, Navdeep Colony, Phase-II Industrial Area, New Delhi'}</div>
-              <div><strong>Phone:</strong> {comp.phone || '+91 98765 43210'} | <strong>Email:</strong> {comp.email || 'info@bansalglass.com'}</div>
-              <div><strong>GSTIN:</strong> {comp.gstin || '07AAAAA0000A1Z5'} | <strong>State:</strong> {comp.state || 'Delhi'} ({comp.stateCode || '07'})</div>
-              {comp.cin && <div><strong>CIN:</strong> {comp.cin}</div>}
-            </div>
-          </div>
-
-          <div className="pi-meta-col">
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">PI Number:</span>
-              <span className="pi-meta-value pi-highlight-value">{invoice.invoiceNumber || 'PI-26-27-XXXX'}</span>
-            </div>
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">PI Date:</span>
-              <span className="pi-meta-value">{formatDate(invoice.invoiceDate || new Date())}</span>
-            </div>
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">PO Number:</span>
-              <span className="pi-meta-value">{invoice.poNumber || 'N/A'}</span>
-            </div>
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">Delivery Date:</span>
-              <span className="pi-meta-value">{invoice.deliveryDate ? formatDate(invoice.deliveryDate) : 'On Schedule'}</span>
-            </div>
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">Area Unit:</span>
-              <span className="pi-meta-value">{invoice.areaUnit || 'SQM'}</span>
-            </div>
-            <div className="pi-meta-row">
-              <span className="pi-meta-label">Length Unit:</span>
-              <span className="pi-meta-value">{invoice.lengthUnit || 'MM'}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Customer Information (Bill To / Ship To) */}
-        <div className="pi-customer-grid">
-          <div className="pi-customer-box left">
-            <div className="pi-subheading">Buyer / Bill To:</div>
-            <div className="pi-customer-name">{cust.customerName || invoice.customer?.customerName || 'Customer'}</div>
-            <div className="pi-customer-line">
-              <strong>Address:</strong> {invoice.billingAddress || cust.billingAddress || ''}
-            </div>
-            <div className="pi-customer-line">
-              <strong>Contact Person:</strong> {invoice.contactPerson || cust.contactPerson || 'N/A'}
-            </div>
-            <div className="pi-customer-line">
-              <strong>Phone:</strong> {invoice.contactNumber || cust.phone || 'N/A'}
-            </div>
-            <div className="pi-customer-line">
-              <strong>GSTIN:</strong> {invoice.customerGSTIN || cust.gstin || 'Unregistered'}
-            </div>
-          </div>
-
-          <div className="pi-customer-box">
-            <div className="pi-subheading">Consignee / Ship To:</div>
-            <div className="pi-customer-name">{cust.customerName || invoice.customer?.customerName || 'Customer'}</div>
-            <div className="pi-customer-line">
-              <strong>Delivery Address:</strong> {invoice.deliveryAddress || invoice.billingAddress || cust.deliveryAddress || ''}
-            </div>
-            <div className="pi-customer-line">
-              <strong>Expected Delivery:</strong> {invoice.deliveryDate ? formatDate(invoice.deliveryDate) : 'As agreed'}
-            </div>
-            <div className="pi-customer-line">
-              <strong>Place of Supply:</strong> {cust.state || comp.state || 'Delhi'}
-            </div>
-          </div>
-        </div>
+        {/* Exact Reference PDF Top Header Box (Image 1) */}
+        <table className="pi-header-box">
+          <tbody>
+            <tr>
+              <td colSpan="6" className="pi-box-title">Proforma Invoice</td>
+            </tr>
+            <tr>
+              <td colSpan="4" className="pi-box-company-td">
+                <img
+                  src={comp.logo || AJAY_GLASS_HEADER_BASE64}
+                  className="pi-box-company-img"
+                  alt={comp.companyName || 'AJAY GLASS HOUSE'}
+                />
+              </td>
+              <td colSpan="2" className="pi-box-customer-td">
+                <table className="pi-customer-subtable">
+                  <tbody>
+                    <tr>
+                      <td className="cust-label" style={{ width: '32%' }}>Customer :</td>
+                      <td className="cust-val font-bold">{cust.customerName || invoice.customer?.customerName || ''}</td>
+                    </tr>
+                    <tr>
+                      <td className="cust-label" style={{ verticalAlign: 'top' }}>Billing Address</td>
+                      <td className="cust-val">{invoice.billingAddress || cust.billingAddress || ''}</td>
+                    </tr>
+                    <tr>
+                      <td className="cust-label" style={{ verticalAlign: 'top' }}>Delivery Address</td>
+                      <td className="cust-val">{invoice.deliveryAddress || invoice.billingAddress || cust.deliveryAddress || ''}</td>
+                    </tr>
+                    <tr>
+                      <td className="cust-label">Delivery Date</td>
+                      <td className="cust-val">{invoice.deliveryDate ? formatDate(invoice.deliveryDate) : ''}</td>
+                    </tr>
+                    <tr>
+                      <td className="cust-label">Contact Person</td>
+                      <td className="cust-val">{invoice.contactPerson || cust.contactPerson || ''}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr className="pi-box-meta-row1">
+              <td className="meta-label-cell" style={{ width: '12%' }}>PI. No:</td>
+              <td className="meta-val-cell font-bold" style={{ width: '17%' }}>{invoice.invoiceNumber || 'PI-26-27-XXXX'}</td>
+              <td className="meta-label-cell" style={{ width: '11%' }}>PO. No:</td>
+              <td className="meta-val-cell" style={{ width: '13%' }}>{invoice.poNumber || ''}</td>
+              <td className="cust-meta-label" style={{ width: '14%' }}>Tel:</td>
+              <td className="cust-meta-val" style={{ width: '33%' }}>{invoice.contactNumber || cust.phone || ''}</td>
+            </tr>
+            <tr className="pi-box-meta-row2">
+              <td className="meta-label-cell">PI. Date:</td>
+              <td className="meta-val-cell">{formatDate(invoice.invoiceDate || new Date())}</td>
+              <td colSpan="2" className="meta-units-cell font-bold">
+                Area - {String(invoice.areaUnit || 'SQM').toUpperCase() === 'SQFT' ? 'Sqft' : 'Sqm'},  Length - {String(invoice.lengthUnit || 'MM').toUpperCase() === 'INCH' ? 'inch' : (String(invoice.lengthUnit || 'MM').toUpperCase() === 'CM' ? 'cm' : 'mm')}
+              </td>
+              <td className="cust-meta-label">GSTIN:</td>
+              <td className="cust-meta-val">{invoice.customerGSTIN || cust.gstin || ''}</td>
+            </tr>
+          </tbody>
+        </table>
 
         {/* 11-Column Glass Items Table */}
         <div className="pi-table-container">
@@ -147,9 +131,9 @@ const InvoicePreview = ({ invoice = {}, company = {} }) => {
                   <td style={{ textAlign: 'right' }}>{item.originalWidth !== undefined && item.originalWidth !== null && item.originalWidth !== '' ? item.originalWidth : item.width}</td>
                   <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{item.quantity}</td>
                   <td style={{ textAlign: 'center' }}>{item.unit || 'unit'}</td>
-                  <td style={{ textAlign: 'right' }}>{Number(item.actArea || 0).toFixed(3)}</td>
+                  <td style={{ textAlign: 'right' }}>{Number(item.actualArea || item.actArea || 0).toFixed(3)}</td>
                   <td style={{ textAlign: 'right' }}>{Number(item.weight || 0).toFixed(2)}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{Number(item.chrgArea || 0).toFixed(3)}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 'bold' }}>{Number(item.chargeableArea || item.chrgArea || 0).toFixed(3)}</td>
                   <td style={{ textAlign: 'right' }}>{Number(item.rate || 0).toFixed(2)}</td>
                   <td style={{ textAlign: 'center' }}>{item.per || 'Sqft'}</td>
                   <td style={{ textAlign: 'right', fontWeight: 'bold' }}>₹{formatCurrency(item.amount)}</td>
@@ -344,13 +328,13 @@ const InvoicePreview = ({ invoice = {}, company = {} }) => {
             </div>
             <div className="pi-bank-row">
               <span className="pi-meta-label" style={{ width: '130px' }}>Account Holder:</span>
-              <span className="pi-meta-value">{comp.accountHolderName || comp.companyName || 'Bansal Glass Industries'}</span>
+              <span className="pi-meta-value">{accHolder}</span>
             </div>
           </div>
 
           <div className="pi-sign-box">
             <div style={{ textAlign: 'right', fontWeight: 'bold', fontSize: '8.5pt' }}>
-              For {comp.companyName || 'BANSAL GLASS INDUSTRIES'}
+              For {compName}
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '35px', borderTop: '1px dashed #cbd5e1', paddingTop: '4px', fontSize: '7.5pt', color: '#475569' }}>
               <div style={{ textAlign: 'center' }}>
