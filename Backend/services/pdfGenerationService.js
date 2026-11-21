@@ -5,6 +5,7 @@ const config = require('../config/config');
 const formatCurrency = require('../utils/formatCurrency');
 const { formatDate } = require('../utils/dateFormatter');
 const logger = require('../utils/logger');
+const { AJAY_GLASS_HEADER_BASE64 } = require('../config/ajayGlassHeader');
 
 /**
  * Builds the complete HTML string for the exact two-page Proforma Invoice layout.

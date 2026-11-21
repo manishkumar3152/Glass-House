@@ -168,7 +168,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
         {/* Footer Info */}
         <div className="p-4 border-t border-slate-200 bg-slate-50">
-          <div className="text-[11px] text-slate-500 font-medium">Bansal Glass Industries</div>
+          <div className="text-[11px] text-slate-700 font-bold">AJAY GLASS HOUSE</div>
           <div className="text-[10px] text-slate-400">Enterprise PI Suite</div>
         </div>
       </aside>

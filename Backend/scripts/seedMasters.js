@@ -29,6 +29,8 @@ const standard15Terms = [
   { termNumber: 15, text: 'This Proforma Invoice is valid for 15 days from the date of issue. Rates and raw material surcharges are subject to revision thereafter.' }
 ];
 
+const { AJAY_GLASS_HEADER_BASE64 } = require('../config/ajayGlassHeader');
+
 const seedMasters = async () => {
   try {
     await mongoose.connect(config.mongoUri);
@@ -37,23 +39,23 @@ const seedMasters = async () => {
     // 1. Company
     await Company.deleteMany({});
     const company = await Company.create({
-      companyName: 'BANSAL GLASS INDUSTRIES',
+      companyName: 'AJAY GLASS HOUSE',
+      logo: AJAY_GLASS_HEADER_BASE64,
       tagline: 'Leading Architectural Toughened & Laminated Glass Processors',
-      address: 'Plot No. 42-43, Navdeep Colony, Phase-II Industrial Area',
-      city: 'New Delhi',
-      state: 'Delhi',
-      stateCode: '07',
-      pinCode: '110020',
-      phone: '+91 98765 43210 / 011-28521000',
-      email: 'info@bansalglass.com',
-      website: 'www.bansalglass.com',
-      cin: 'U26100DL2018PTC321456',
-      gstin: '07AAAAA0000A1Z5',
+      address: 'Opp Jain Mandir, Khor Darwaja, Delhi Road, Jaipur – 302028',
+      city: 'Jaipur',
+      state: 'Rajasthan',
+      stateCode: '08',
+      pinCode: '302028',
+      phone: '0141-4010049, 9799002852',
+      email: 'shreeneelkamalglass@gmail.com',
+      website: 'www.neelkamaltuff.in',
+      gstin: '08AASCS9947B1ZQ',
       bankName: 'HDFC Bank Ltd',
       accountNumber: '50200085210987',
       ifscCode: 'HDFC0001234',
-      branch: 'Industrial Area Phase-II',
-      accountHolderName: 'Bansal Glass Industries',
+      branch: 'Jaipur Main Branch',
+      accountHolderName: 'Ajay Glass House',
       authorizedSignatory: 'Authorized Signatory',
       isDefault: true
     });
