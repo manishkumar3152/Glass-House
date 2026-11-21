@@ -1,0 +1,366 @@
+/* Exact 2-Page Proforma Invoice Preview Styling */
+
+.pi-preview-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  background-color: #525659;
+  padding: 24px;
+  min-height: 100vh;
+}
+
+.pi-preview-page {
+  position: relative;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 12mm 10mm;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+  font-size: 8.5pt;
+  line-height: 1.3;
+  color: #111827;
+  box-sizing: border-box;
+}
+
+/* Page 1 Title */
+.pi-title-bar {
+  text-align: center;
+  border-bottom: 2px solid #1e3a8a;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+}
+
+.pi-title-bar h1 {
+  font-size: 15pt;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.pi-header-grid {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #9ca3af;
+  margin-bottom: 8px;
+  background: #fafafa;
+}
+
+.pi-company-col {
+  width: 58%;
+  padding: 8px 10px;
+  border-right: 1px solid #9ca3af;
+}
+
+.pi-company-name {
+  font-size: 12pt;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.pi-company-tagline {
+  font-size: 7.5pt;
+  color: #4b5563;
+  margin-bottom: 4px;
+  font-style: italic;
+}
+
+.pi-company-text {
+  font-size: 8pt;
+  color: #374151;
+  line-height: 1.35;
+}
+
+.pi-meta-col {
+  width: 42%;
+  padding: 8px 10px;
+  background: #f8fafc;
+}
+
+.pi-meta-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  font-size: 8pt;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.pi-meta-row:last-child {
+  border-bottom: none;
+}
+
+.pi-meta-label {
+  font-weight: 600;
+  color: #475569;
+}
+
+.pi-meta-value {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pi-highlight-value {
+  color: #1e3a8a;
+  font-size: 9pt;
+}
+
+/* Customer Grid */
+.pi-customer-grid {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #9ca3af;
+  margin-bottom: 8px;
+}
+
+.pi-customer-box {
+  width: 50%;
+  padding: 6px 10px;
+}
+
+.pi-customer-box.left {
+  border-right: 1px solid #9ca3af;
+}
+
+.pi-subheading {
+  font-size: 8pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #1e3a8a;
+  border-bottom: 1px solid #cbd5e1;
+  padding-bottom: 2px;
+  margin-bottom: 4px;
+}
+
+.pi-customer-name {
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.pi-customer-line {
+  font-size: 8pt;
+  color: #374151;
+  line-height: 1.35;
+}
+
+/* Table */
+.pi-table-container {
+  margin-bottom: 8px;
+}
+
+.pi-table-title {
+  font-size: 8pt;
+  font-weight: 700;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+  letter-spacing: 0.5px;
+}
+
+.pi-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 7.8pt;
+  border: 1px solid #64748b;
+}
+
+.pi-table th {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 4px 5px;
+  border: 1px solid #94a3b8;
+  text-align: center;
+}
+
+.pi-table td {
+  padding: 4px 5px;
+  border: 1px solid #cbd5e1;
+  vertical-align: middle;
+}
+
+.pi-subtotal-row {
+  background: #f8fafc;
+  font-weight: 700;
+  border-top: 2px solid #64748b;
+  border-bottom: 2px solid #64748b;
+}
+
+/* Summary */
+.pi-summary-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.pi-summary-left {
+  width: 48%;
+}
+
+.pi-summary-right {
+  width: 52%;
+}
+
+.pi-totals-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #64748b;
+  font-size: 8pt;
+}
+
+.pi-totals-table td {
+  padding: 3.5px 7px;
+  border: 1px solid #cbd5e1;
+}
+
+.pi-totals-label {
+  font-weight: 600;
+  color: #334155;
+  width: 60%;
+}
+
+.pi-totals-val {
+  text-align: right;
+  font-weight: 600;
+  color: #0f172a;
+  width: 40%;
+}
+
+.pi-grand-total {
+  background: #eff6ff;
+  font-size: 9pt;
+  border-top: 2px solid #1e3a8a;
+  border-bottom: 2px solid #1e3a8a;
+}
+
+.pi-grand-total td {
+  font-weight: 700;
+  color: #1e3a8a;
+  padding: 5px 7px;
+}
+
+.pi-words-box {
+  border: 1px solid #94a3b8;
+  background: #f8fafc;
+  padding: 6px 8px;
+  font-size: 8pt;
+}
+
+.pi-words-lbl {
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 7.5pt;
+  margin-bottom: 2px;
+}
+
+.pi-words-val {
+  font-weight: 700;
+  color: #0f172a;
+  font-style: italic;
+}
+
+/* Page 2 */
+.pi-page2-header {
+  text-align: center;
+  border-bottom: 2px solid #1e3a8a;
+  padding-bottom: 5px;
+  margin-bottom: 12px;
+}
+
+.pi-page2-header h2 {
+  font-size: 13pt;
+  font-weight: 700;
+  color: #1e3a8a;
+  margin: 0;
+}
+
+.pi-term-item {
+  display: flex;
+  margin-bottom: 5px;
+  font-size: 8pt;
+  line-height: 1.4;
+  color: #1f2937;
+}
+
+.pi-term-num {
+  width: 24px;
+  font-weight: 700;
+  color: #1e3a8a;
+  flex-shrink: 0;
+}
+
+.pi-page2-bottom {
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid #94a3b8;
+  margin-top: 15px;
+  background: #ffffff;
+}
+
+.pi-bank-box {
+  width: 55%;
+  padding: 10px;
+  border-right: 1px solid #94a3b8;
+}
+
+.pi-bank-title {
+  font-size: 8.5pt;
+  font-weight: 700;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 3px;
+}
+
+.pi-bank-row {
+  display: flex;
+  font-size: 8pt;
+  padding: 2.5px 0;
+}
+
+.pi-sign-box {
+  width: 45%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.pi-page-footer {
+  position: absolute;
+  bottom: 10mm;
+  left: 10mm;
+  right: 10mm;
+  display: flex;
+  justify-content: space-between;
+  font-size: 7.5pt;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+  padding-top: 4px;
+}
+
+@media print {
+  .pi-preview-container {
+    background: none;
+    padding: 0;
+    gap: 0;
+  }
+  .pi-preview-page {
+    box-shadow: none;
+    page-break-after: always;
+    margin: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
