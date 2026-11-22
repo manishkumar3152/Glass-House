@@ -13,6 +13,8 @@ const CustomerDetailsForm = ({
     const selected = customers.find((c) => c._id === customerId);
     if (selected) {
       onCustomerSelect(selected);
+    } else {
+      onCustomerSelect(null);
     }
   };
 

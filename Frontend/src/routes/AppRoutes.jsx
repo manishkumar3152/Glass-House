@@ -18,7 +18,6 @@ import InvoicePreviewPage from '../pages/invoices/InvoicePreviewPage';
 
 import CompanySettings from '../pages/masters/CompanySettings';
 import GlassSpecifications from '../pages/masters/GlassSpecifications';
-import GlassRates from '../pages/masters/GlassRates';
 import ProcessingCharges from '../pages/masters/ProcessingCharges';
 import TaxSettings from '../pages/masters/TaxSettings';
 import TermsSettings from '../pages/masters/TermsSettings';
@@ -53,7 +52,6 @@ const AppRoutes = () => {
           {/* Masters */}
           <Route path="/masters/company" element={<CompanySettings />} />
           <Route path="/masters/glass-specifications" element={<GlassSpecifications />} />
-          <Route path="/masters/glass-rates" element={<GlassRates />} />
           <Route path="/masters/processing-charges" element={<ProcessingCharges />} />
           <Route path="/masters/tax" element={<TaxSettings />} />
           <Route path="/masters/terms" element={<TermsSettings />} />

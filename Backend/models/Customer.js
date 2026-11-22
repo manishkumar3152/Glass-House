@@ -63,7 +63,25 @@ const customerSchema = new mongoose.Schema(
       type: String,
       enum: ['Active', 'Inactive'],
       default: 'Active'
-    }
+    },
+    glassRates: [
+      {
+        glassSpecification: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'GlassSpecification',
+          required: true
+        },
+        rate: {
+          type: Number,
+          default: 0
+        },
+        per: {
+          type: String,
+          enum: ['SQFT', 'SQM', 'NOS', 'UNIT'],
+          default: 'SQFT'
+        }
+      }
+    ]
   },
   {
     timestamps: true

@@ -9,6 +9,7 @@ const GlassItemRow = ({
   item,
   index,
   specifications = [],
+  customerRates = [],
   rates = [],
   lengthUnit = 'MM',
   areaUnit = 'SQM',
@@ -25,9 +26,22 @@ const GlassItemRow = ({
     const specId = e.target.value;
     const selectedSpec = specifications.find((s) => s._id === specId);
     if (selectedSpec) {
-      const matchingRate = rates.find((r) => r.glassSpecification?._id === specId);
-      const appliedRate = matchingRate ? matchingRate.rate : selectedSpec.defaultRate || '';
-      const appliedPer = matchingRate ? matchingRate.per : selectedSpec.rateUnit || 'Sqft';
+      // 1. Check if customer has a special rate configured for this specification
+      const activeRates = customerRates && customerRates.length > 0 ? customerRates : rates;
+      const matchingCustRate = activeRates.find((r) => {
+        const rSpecId = r.glassSpecification?._id || r.glassSpecification;
+        return String(rSpecId) === String(specId);
+      });
+
+      // 2. If customer rate exists and > 0, pick it up; otherwise automatically pick up specification defaultRate!
+      const appliedRate = matchingCustRate && matchingCustRate.rate !== undefined && matchingCustRate.rate !== null && Number(matchingCustRate.rate) > 0
+        ? matchingCustRate.rate
+        : (selectedSpec.defaultRate !== undefined && selectedSpec.defaultRate !== null ? selectedSpec.defaultRate : '');
+
+      const appliedPer = matchingCustRate && matchingCustRate.rate !== undefined && matchingCustRate.rate !== null && Number(matchingCustRate.rate) > 0
+        ? (matchingCustRate.per || selectedSpec.rateUnit || 'Sqft')
+        : (selectedSpec.rateUnit || 'Sqft');
+
       const specThickness = selectedSpec.thickness || 6;
       const specDensity = selectedSpec.density || 2.475;
 

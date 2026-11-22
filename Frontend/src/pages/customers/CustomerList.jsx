@@ -89,7 +89,18 @@ const CustomerList = () => {
                 ) : (
                   customers.map((c) => (
                     <tr key={c._id} className="hover:bg-slate-50 transition-colors">
-                      <td className="p-3 font-semibold text-slate-900">{c.customerName}</td>
+                      <td className="p-3 font-semibold text-slate-900">
+                        <div>{c.customerName}</div>
+                        {c.glassRates && c.glassRates.length > 0 ? (
+                          <span className="inline-block mt-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                            {c.glassRates.length} Custom Rate{c.glassRates.length > 1 ? 's' : ''}
+                          </span>
+                        ) : (
+                          <span className="inline-block mt-0.5 text-[10px] text-slate-400 font-normal">
+                            Default Rates
+                          </span>
+                        )}
+                      </td>
                       <td className="p-3 text-slate-700">{c.contactPerson || 'N/A'}</td>
                       <td className="p-3 text-slate-700 font-mono">{c.phone || 'N/A'}</td>
                       <td className="p-3 text-slate-600">{c.email || 'N/A'}</td>

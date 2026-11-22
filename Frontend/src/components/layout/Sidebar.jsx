@@ -145,10 +145,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                   <IoLayersOutline className="w-3.5 h-3.5" />
                   <span>Glass Specs</span>
                 </NavLink>
-                <NavLink to="/masters/glass-rates" className={subItemClass}>
-                  <IoPricetagOutline className="w-3.5 h-3.5" />
-                  <span>Glass Rates</span>
-                </NavLink>
                 <NavLink to="/masters/processing-charges" className={subItemClass}>
                   <IoHammerOutline className="w-3.5 h-3.5" />
                   <span>Processing Charges</span>

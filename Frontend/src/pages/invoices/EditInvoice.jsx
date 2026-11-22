@@ -6,10 +6,10 @@ import { fetchCustomers } from '../../redux/slices/customerSlice';
 import {
   fetchCompany,
   fetchGlassSpecifications,
-  fetchGlassRates,
   fetchProcessingCharges,
   fetchTaxConfig
 } from '../../redux/slices/masterSlice';
+import { calculateGlassAmount } from '../../calculators/amountCalculator';
 import InvoiceHeaderForm from '../../components/invoice/InvoiceHeaderForm';
 import CustomerDetailsForm from '../../components/invoice/CustomerDetailsForm';
 import GlassItemsTable from '../../components/invoice/GlassItemsTable';
@@ -32,7 +32,6 @@ const EditInvoice = () => {
   const {
     company,
     glassSpecifications,
-    glassRates,
     processingCharges,
     taxConfig
   } = useSelector((state) => state.masters);
@@ -73,7 +72,6 @@ const EditInvoice = () => {
     dispatch(fetchCustomers({ limit: 100 }));
     dispatch(fetchCompany());
     dispatch(fetchGlassSpecifications());
-    dispatch(fetchGlassRates());
     dispatch(fetchProcessingCharges());
     dispatch(fetchTaxConfig());
   }, [dispatch, id]);
@@ -116,20 +114,66 @@ const EditInvoice = () => {
     }
   }, [currentInvoice, navigate]);
 
+  const selectedCustomer = customers.find((c) => c._id === formData.customer);
+  const customerRates = selectedCustomer?.glassRates || [];
+
   const handleCustomerSelect = (customer) => {
     setFormData((prev) => ({
       ...prev,
-      customer: customer._id,
-      billingAddress: customer.billingAddress || '',
-      deliveryAddress: customer.deliveryAddress || customer.billingAddress || '',
-      contactPerson: customer.contactPerson || '',
-      contactNumber: customer.phone || '',
-      customerGSTIN: customer.gstin || ''
+      customer: customer ? customer._id : '',
+      billingAddress: customer ? customer.billingAddress || '' : '',
+      deliveryAddress: customer ? customer.deliveryAddress || customer.billingAddress || '' : '',
+      contactPerson: customer ? customer.contactPerson || '' : '',
+      contactNumber: customer ? customer.phone || '' : '',
+      customerGSTIN: customer ? customer.gstin || '' : ''
     }));
 
     if (company?.stateCode && customer?.stateCode) {
       setIsInterStateTax(company.stateCode !== customer.stateCode);
     }
+
+    // Auto-update rates for all existing items:
+    // If a customer is selected and has a custom rate for that specification, use customer rate.
+    // Otherwise (no customer, or customer has no custom rate for this spec), ALWAYS revert to specification defaultRate!
+    setGlassItems((prevItems) =>
+      prevItems.map((item) => {
+        if (!item.specificationId) return item;
+        const spec = glassSpecifications.find(
+          (s) => String(s._id) === String(item.specificationId)
+        );
+        const matchingCustRate = customer && Array.isArray(customer.glassRates)
+          ? customer.glassRates.find(
+              (r) => String(r.glassSpecification?._id || r.glassSpecification) === String(item.specificationId)
+            )
+          : null;
+
+        let nextRate = '';
+        let nextPer = item.per || 'Sqft';
+
+        if (matchingCustRate && matchingCustRate.rate !== undefined && matchingCustRate.rate !== null && Number(matchingCustRate.rate) > 0) {
+          nextRate = matchingCustRate.rate;
+          nextPer = matchingCustRate.per || (spec ? spec.rateUnit : 'Sqft');
+        } else if (spec) {
+          nextRate = spec.defaultRate !== undefined && spec.defaultRate !== null ? spec.defaultRate : '';
+          nextPer = spec.rateUnit || 'Sqft';
+        } else {
+          nextRate = item.rate;
+          nextPer = item.per || 'Sqft';
+        }
+
+        const chrg = Number(item.chrgArea) || 0;
+        const nextAmount = chrg > 0 && nextRate !== ''
+          ? calculateGlassAmount(chrg, item.quantity, nextRate, nextPer, formData.areaUnit)
+          : 0;
+
+        return {
+          ...item,
+          rate: nextRate,
+          per: nextPer,
+          amount: nextAmount
+        };
+      })
+    );
   };
 
   const calculated = useInvoiceCalculation({
@@ -285,7 +329,8 @@ const EditInvoice = () => {
             items={calculated.glassItems}
             totals={calculated}
             specifications={glassSpecifications}
-            rates={glassRates}
+            customerRates={customerRates}
+            rates={customerRates}
             lengthUnit={formData.lengthUnit}
             areaUnit={formData.areaUnit}
             extra={formData.extra}

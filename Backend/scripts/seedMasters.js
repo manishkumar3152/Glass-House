@@ -61,42 +61,7 @@ const seedMasters = async () => {
     });
     console.log('Company master seeded');
 
-    // 2. Customer
-    await Customer.deleteMany({});
-    const customer = await Customer.create({
-      customerName: 'Ajay Glass House',
-      billingAddress: 'Shop No. 12, Main Glass Market, Ring Road, Jaipur, Rajasthan',
-      deliveryAddress: 'Site Plot 88, Vishwakarma Industrial Area (VKI), Jaipur, Rajasthan',
-      city: 'Jaipur',
-      state: 'Rajasthan',
-      stateCode: '08',
-      country: 'India',
-      pinCode: '302013',
-      contactPerson: 'Mr. Ajay Sharma',
-      phone: '+91 98290 85210',
-      email: 'ajayglasshouse@gmail.com',
-      gstin: '08AAACA5555M1Z2',
-      customerType: 'B2B',
-      status: 'Active'
-    });
-
-    await Customer.create({
-      customerName: 'Sharma Aluminium & Glazing',
-      billingAddress: 'GF-4, Metro Commercial Complex, Sector 18, Noida, Uttar Pradesh',
-      deliveryAddress: 'GF-4, Metro Commercial Complex, Sector 18, Noida, Uttar Pradesh',
-      city: 'Noida',
-      state: 'Uttar Pradesh',
-      stateCode: '09',
-      contactPerson: 'Ramesh Sharma',
-      phone: '+91 98110 12345',
-      email: 'sharma.glazing@gmail.com',
-      gstin: '09AABCS1234P1Z8',
-      customerType: 'Dealer',
-      status: 'Active'
-    });
-    console.log('Customer master seeded');
-
-    // 3. Glass Specifications
+    // 2. Glass Specifications
     await GlassSpecification.deleteMany({});
     const spec6mm = await GlassSpecification.create({
       glassName: '6mm Clear Flat Tuff Glass',
@@ -150,6 +115,48 @@ const seedMasters = async () => {
       status: 'Active'
     });
     console.log('Glass specifications seeded');
+
+    // 3. Customer (with customer specific glass rates)
+    await Customer.deleteMany({});
+    const customer = await Customer.create({
+      customerName: 'Ajay Glass House',
+      billingAddress: 'Shop No. 12, Main Glass Market, Ring Road, Jaipur, Rajasthan',
+      deliveryAddress: 'Site Plot 88, Vishwakarma Industrial Area (VKI), Jaipur, Rajasthan',
+      city: 'Jaipur',
+      state: 'Rajasthan',
+      stateCode: '08',
+      country: 'India',
+      pinCode: '302013',
+      contactPerson: 'Mr. Ajay Sharma',
+      phone: '+91 98290 85210',
+      email: 'ajayglasshouse@gmail.com',
+      gstin: '08AAACA5555M1Z2',
+      customerType: 'B2B',
+      status: 'Active',
+      glassRates: [
+        { glassSpecification: spec12mm._id, rate: 148, per: 'SQFT' },
+        { glassSpecification: spec6mm._id, rate: 75, per: 'SQFT' }
+      ]
+    });
+
+    await Customer.create({
+      customerName: 'Sharma Aluminium & Glazing',
+      billingAddress: 'GF-4, Metro Commercial Complex, Sector 18, Noida, Uttar Pradesh',
+      deliveryAddress: 'GF-4, Metro Commercial Complex, Sector 18, Noida, Uttar Pradesh',
+      city: 'Noida',
+      state: 'Uttar Pradesh',
+      stateCode: '09',
+      contactPerson: 'Ramesh Sharma',
+      phone: '+91 98110 12345',
+      email: 'sharma.glazing@gmail.com',
+      gstin: '09AABCS1234P1Z8',
+      customerType: 'Dealer',
+      status: 'Active',
+      glassRates: [
+        { glassSpecification: spec12mm._id, rate: 145, per: 'SQFT' }
+      ]
+    });
+    console.log('Customer master seeded with specific glass rates');
 
     // 4. Glass Rates
     await GlassRate.deleteMany({});

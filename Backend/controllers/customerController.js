@@ -1,4 +1,5 @@
 const Customer = require('../models/Customer');
+require('../models/GlassSpecification');
 const ApiResponse = require('../utils/ApiResponse');
 const ApiError = require('../utils/ApiError');
 const asyncHandler = require('../utils/asyncHandler');
@@ -24,6 +25,7 @@ const getCustomers = asyncHandler(async (req, res) => {
 
   const total = await Customer.countDocuments(query);
   const customers = await Customer.find(query)
+    .populate('glassRates.glassSpecification', 'glassName glassCode thickness defaultRate rateUnit')
     .sort({ customerName: 1 })
     .skip((page - 1) * limit)
     .limit(limit);
@@ -49,7 +51,8 @@ const getCustomers = asyncHandler(async (req, res) => {
 // @route   GET /api/customers/:id
 // @access  Private
 const getCustomerById = asyncHandler(async (req, res, next) => {
-  const customer = await Customer.findById(req.params.id);
+  const customer = await Customer.findById(req.params.id)
+    .populate('glassRates.glassSpecification', 'glassName glassCode thickness defaultRate rateUnit');
   if (!customer) {
     return next(new ApiError(404, 'Customer not found'));
   }
@@ -63,7 +66,9 @@ const getCustomerById = asyncHandler(async (req, res, next) => {
 // @route   POST /api/customers
 // @access  Private
 const createCustomer = asyncHandler(async (req, res) => {
-  const customer = await Customer.create(req.body);
+  const created = await Customer.create(req.body);
+  const customer = await Customer.findById(created._id)
+    .populate('glassRates.glassSpecification', 'glassName glassCode thickness defaultRate rateUnit');
   res.status(201).json(
     new ApiResponse(201, customer, 'Customer created successfully')
   );
@@ -81,7 +86,7 @@ const updateCustomer = asyncHandler(async (req, res, next) => {
   customer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true
-  });
+  }).populate('glassRates.glassSpecification', 'glassName glassCode thickness defaultRate rateUnit');
 
   res.status(200).json(
     new ApiResponse(200, customer, 'Customer updated successfully')
