@@ -135,4 +135,40 @@ console.log('--- RUNNING EXTRA + STANDARD CHARGEABLE AREA TESTS ---');
   assert.strictEqual(details.actualArea, 3.301);
 }
 
+// Test Case 9: User's exact scenario: L=48, W=12, Qty=1, Rate=148, Thickness=12, Density=2.5, Extra=1
+{
+  const result = processGlassItems([
+    {
+      itemCode: 'G1',
+      specification: '12mm Clear Flat Tuff Glass (12mm)',
+      length: '48',
+      width: '12',
+      quantity: 1,
+      extra: 0, // item has 0, but header passes defaultExtra=1
+      thickness: 12,
+      density: 2.5,
+      rate: 148,
+      per: 'Sqft'
+    }
+  ], 'INCH', 'SQFT', 1, false);
+
+  const item = result.items[0];
+  console.log('\n--- Test 9: User Scenario (L=48, W=12, Extra=1, Rate=148) ---');
+  console.log('originalLength:', item.originalLength);
+  console.log('originalWidth:', item.originalWidth);
+  console.log('adjustedLength:', item.adjustedLength, '(Expected: 49)');
+  console.log('adjustedWidth:', item.adjustedWidth, '(Expected: 13)');
+  console.log('actualArea:', item.actualArea, '(Expected: 4.000 - Unchanged by Extra)');
+  console.log('chargeableArea:', item.chargeableArea, '(Expected: 4.424)');
+  console.log('weight:', item.weight, '(Expected: 12.33)');
+  console.log('amount:', item.amount, '(Expected: 654.75)');
+
+  assert.strictEqual(item.adjustedLength, 49);
+  assert.strictEqual(item.adjustedWidth, 13);
+  assert.strictEqual(item.actualArea, 4.000);
+  assert.strictEqual(item.chargeableArea, 4.424);
+  assert.strictEqual(item.weight, 12.33);
+  assert.strictEqual(item.amount, 654.75);
+}
+
 console.log('--- ALL EXTRA + STANDARD TESTS PASSED SUCCESSFULLY! ✅ ---');

@@ -13,7 +13,7 @@ export const useInvoiceCalculation = ({
   taxConfig = {},
   lengthUnit = 'MM',
   areaUnit = 'SQM',
-  extra = 0,
+  extra = "",
   standard = false,
   companyStateCode = '07',
   customerStateCode = ''
@@ -33,12 +33,9 @@ export const useInvoiceCalculation = ({
         ? item.originalWidth
         : item.width;
       const quantity = Number(item.quantity ?? item.qty) || 0;
-      const activeExtra = item.extra !== undefined && item.extra !== null && item.extra !== ''
-        ? Number(item.extra)
-        : (Number(extra) || 0);
-      const activeStandard = item.standard !== undefined && item.standard !== null
-        ? Boolean(item.standard)
-        : Boolean(standard);
+      // Header/PI level Extra & Standard apply to all items in this invoice
+      const activeExtra = Number(extra) || 0;
+      const activeStandard = Boolean(standard);
       const thickness = Number(item.thickness) || 6;
       const density = Number(item.density) || 2.475;
       const unit = item.unit || 'unit';
@@ -94,8 +91,8 @@ export const useInvoiceCalculation = ({
         length: originalLength !== undefined ? originalLength : '',
         width: originalWidth !== undefined ? originalWidth : '',
         quantity: item.quantity !== undefined ? item.quantity : '',
-        extra: item.extra !== undefined ? item.extra : 0,
-        standard,
+        extra: activeExtra,
+        standard: activeStandard,
         adjustedLength: areaDetails ? areaDetails.adjustedLength : 0,
         adjustedWidth: areaDetails ? areaDetails.adjustedWidth : 0,
         thickness,

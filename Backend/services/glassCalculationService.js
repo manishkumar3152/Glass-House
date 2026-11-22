@@ -16,8 +16,8 @@ const processGlassItems = (
   rawItems = [],
   lengthUnit = 'INCH',
   areaUnit = 'SQFT',
-  defaultExtra = 0,
-  defaultStandard = false
+  defaultExtra = null,
+  defaultStandard = null
 ) => {
   if (!Array.isArray(rawItems) || rawItems.length === 0) {
     return {
@@ -47,12 +47,12 @@ const processGlassItems = (
       ? item.originalWidth
       : item.width;
     const quantity = Number(item.quantity ?? item.qty) || 0;
-    const extra = item.extra !== undefined && item.extra !== null && item.extra !== ''
-      ? Number(item.extra)
-      : extraNum;
-    const standard = item.standard !== undefined && item.standard !== null
-      ? Boolean(item.standard)
-      : isStd;
+    const extra = defaultExtra !== null && defaultExtra !== undefined
+      ? extraNum
+      : (item.extra !== undefined && item.extra !== null && item.extra !== '' ? Number(item.extra) : 0);
+    const standard = defaultStandard !== null && defaultStandard !== undefined
+      ? isStd
+      : (item.standard !== undefined && item.standard !== null ? Boolean(item.standard) : false);
     const thickness = Number(item.thickness) || 6;
     const density = Number(item.density) || 2.475;
     const unit = item.unit || 'unit';

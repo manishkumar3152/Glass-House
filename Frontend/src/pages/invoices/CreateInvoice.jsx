@@ -51,7 +51,7 @@ const CreateInvoice = () => {
     customerGSTIN: '',
     areaUnit: 'SQM',
     lengthUnit: 'MM',
-    extra: 0,
+    extra: "",
     standard: false,
     invoiceStatus: 'Draft'
   });
@@ -65,8 +65,6 @@ const CreateInvoice = () => {
       length: '',
       width: '',
       quantity: '',
-      extra: 0,
-      standard: false,
       thickness: 6,
       density: 2.475,
       unit: 'unit',
@@ -156,8 +154,6 @@ const CreateInvoice = () => {
         length: '',
         width: '',
         quantity: '',
-        extra: 0,
-        standard: false,
         thickness: 6,
         density: 2.475,
         unit: 'unit',

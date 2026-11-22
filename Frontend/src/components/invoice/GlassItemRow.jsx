@@ -61,8 +61,8 @@ const GlassItemRow = ({
     const nextL = field === 'length' ? rawValue : item.length;
     const nextW = field === 'width' ? rawValue : item.width;
     const nextQty = field === 'quantity' ? rawValue : item.quantity;
-    const activeExtra = item.extra !== undefined && item.extra !== null && item.extra !== '' ? Number(item.extra) : Number(extra || 0);
-    const activeStandard = item.standard !== undefined ? Boolean(item.standard) : Boolean(standard);
+    const activeExtra = Number(extra) || 0;
+    const activeStandard = Boolean(standard);
 
     const lNum = parseDimensionValue(nextL);
     const wNum = parseDimensionValue(nextW);
@@ -132,9 +132,11 @@ const GlassItemRow = ({
       return;
     }
     const act = Number(val) || 0;
+    const activeExtra = Number(extra) || 0;
+    const activeStandard = Boolean(standard);
     const newChrg = item.isManualChrgArea && item.chrgArea !== ''
       ? (Number(item.chrgArea) || act)
-      : calculateChargeableArea(item.length, item.width, item.quantity, item.extra, item.standard, lengthUnit, areaUnit) || act;
+      : calculateChargeableArea(item.length, item.width, item.quantity, activeExtra, activeStandard, lengthUnit, areaUnit) || act;
     const newWeight = item.isManualWeight && item.weight !== ''
       ? item.weight
       : calculateWeight(newChrg, thickness, density, null, areaUnit);
