@@ -22,31 +22,33 @@ const GlassItemsTable = ({
   const aUnitLabel = String(areaUnit).toUpperCase() === 'SQFT' ? 'Sqft' : 'Sqm';
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <h3 className="text-sm font-bold text-primary-900 uppercase tracking-wide">
+    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
+      <div className="px-3.5 sm:px-4 py-3 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          <h3 className="text-xs sm:text-sm font-bold text-primary-900 uppercase tracking-wide">
             1. Glass Specifications & Items ({items.length})
           </h3>
-          <span className="text-xs text-slate-600 font-medium bg-slate-200/70 px-2.5 py-0.5 rounded">
+          <span className="text-[11px] sm:text-xs text-slate-600 font-medium bg-slate-200/70 px-2 sm:px-2.5 py-0.5 rounded">
             Dimensions in {lengthUnit} | Area in {areaUnit} | Weight in KG
           </span>
         </div>
         {!readOnly && (
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={onAddItem}
-            icon={IoAddOutline}
-          >
-            Add Glass Item
-          </Button>
+          <div className="self-start sm:self-auto">
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={onAddItem}
+              icon={IoAddOutline}
+            >
+              Add Glass Item
+            </Button>
+          </div>
         )}
       </div>
 
       <div className="overflow-x-auto max-h-[500px]">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[920px]">
           <thead className="bg-slate-100 text-slate-700 uppercase font-semibold text-[11px] sticky top-0 z-10 border-b border-slate-300">
             <tr>
               <th className="p-2.5">Specification</th>

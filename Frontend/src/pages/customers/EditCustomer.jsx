@@ -131,24 +131,24 @@ const EditCustomer = () => {
 
   return (
     <div className="space-y-5">
-      <div className="flex items-center justify-between bg-white p-4 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
           <Link
             to="/customers"
-            className="p-1.5 text-slate-500 hover:text-slate-800 rounded-md hover:bg-slate-100"
+            className="p-1.5 text-slate-500 hover:text-slate-800 rounded-md hover:bg-slate-100 transition-colors"
           >
             <IoArrowBackOutline className="w-5 h-5" />
           </Link>
           <div>
-            <h2 className="text-lg font-bold text-slate-800">Edit Customer Master</h2>
-            <p className="text-xs text-slate-500">{formData.customerName}</p>
+            <h2 className="text-base sm:text-lg font-bold text-slate-800">Edit Customer Master</h2>
+            <p className="text-xs text-slate-500 truncate max-w-sm">{formData.customerName}</p>
           </div>
         </div>
       </div>
 
       <form onSubmit={handleSubmit}>
         <Card title="Update Customer Information">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-5">
             <Input
               label="Customer / Business Name"
               name="customerName"
@@ -260,7 +260,7 @@ const EditCustomer = () => {
           >
             {glassSpecifications && glassSpecifications.length > 0 ? (
               <div className="overflow-x-auto border border-slate-200 rounded-lg">
-                <table className="w-full text-left border-collapse text-xs">
+                <table className="w-full text-left border-collapse text-xs min-w-[680px]">
                   <thead className="bg-slate-100 text-slate-700 font-semibold uppercase tracking-wider text-[11px] border-b border-slate-300">
                     <tr>
                       <th className="p-3">Glass Specification</th>
@@ -354,7 +354,7 @@ const EditCustomer = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-3 pt-5 mt-5">
+        <div className="flex flex-wrap justify-end gap-2.5 sm:gap-3 pt-4 sm:pt-5 mt-4 sm:mt-5">
           <Link to="/customers">
             <Button variant="secondary">Cancel</Button>
           </Link>

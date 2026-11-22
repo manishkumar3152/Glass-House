@@ -24,16 +24,16 @@ const InvoicePreviewPage = () => {
   return (
     <div className="min-h-screen bg-slate-700">
       {/* Floating control bar */}
-      <div className="sticky top-0 z-50 bg-slate-900 text-white px-6 py-3 flex items-center justify-between no-print shadow-md">
+      <div className="sticky top-0 z-50 bg-slate-900 text-white px-3 sm:px-6 py-2.5 sm:py-3 flex flex-wrap items-center justify-between gap-2.5 sm:gap-4 no-print shadow-md">
         <Link
           to={`/invoices/view/${id}`}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
         >
           <IoArrowBackOutline className="w-4 h-4" />
           Back to Invoice
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Button
             size="sm"
             variant="secondary"

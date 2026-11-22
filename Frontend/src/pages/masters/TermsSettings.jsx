@@ -37,28 +37,30 @@ const TermsSettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center text-primary-900">
+          <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center text-primary-900 shrink-0">
             <IoReaderOutline className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-800">Terms and Conditions Master</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-800">Terms and Conditions Master</h2>
             <p className="text-xs text-slate-500">
               All 15 standard glass processing industry clauses printed on Page 2 of every Proforma Invoice.
             </p>
           </div>
         </div>
-        <Button variant="primary" icon={IoSaveOutline} size="sm" onClick={handleSave}>
-          Save All Terms
-        </Button>
+        <div className="self-start sm:self-auto">
+          <Button variant="primary" icon={IoSaveOutline} size="sm" onClick={handleSave}>
+            Save All Terms
+          </Button>
+        </div>
       </div>
 
       <Card title="Page 2 Terms & Conditions (15 Clauses)">
         <div className="space-y-3">
           {terms.map((t, idx) => (
-            <div key={idx} className="flex items-start gap-3 p-3 bg-slate-50 rounded-md border border-slate-200">
-              <span className="w-8 font-bold text-primary-900 text-xs pt-1">{idx + 1}.</span>
+            <div key={idx} className="flex items-start gap-2.5 sm:gap-3 p-2.5 sm:p-3 bg-slate-50 rounded-md border border-slate-200">
+              <span className="w-7 sm:w-8 font-bold text-primary-900 text-xs pt-1 shrink-0">{idx + 1}.</span>
               <textarea
                 rows={2}
                 value={t}

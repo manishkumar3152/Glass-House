@@ -26,7 +26,7 @@ const InvoiceActions = ({
   const isCancelled = invoice?.invoiceStatus === 'Cancelled';
 
   return (
-    <div className="bg-white border-b border-slate-200 px-6 py-3.5 flex flex-wrap items-center justify-between gap-3 sticky top-16 z-20 shadow-xs">
+    <div className="bg-white border-b border-slate-200 px-3 sm:px-6 py-2.5 sm:py-3.5 flex flex-wrap items-center justify-between gap-2 sm:gap-3 sticky top-16 z-20 shadow-xs">
       <div className="flex items-center gap-2">
         <Button
           type="button"
@@ -39,7 +39,7 @@ const InvoiceActions = ({
         </Button>
       </div>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
         {/* Save Draft */}
         {!isApproved && !isCancelled && onSaveDraft && (
           <Button

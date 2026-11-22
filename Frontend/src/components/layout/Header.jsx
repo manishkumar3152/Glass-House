@@ -12,11 +12,12 @@ const Header = ({ onMenuClick }) => {
   };
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between sticky top-0 z-30">
-      <div className="flex items-center gap-3">
+    <header className="h-16 bg-white border-b border-slate-200 px-3 sm:px-6 flex items-center justify-between sticky top-0 z-30">
+      <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-1.5 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md"
+          className="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors"
+          aria-label="Open navigation menu"
         >
           <IoMenuOutline className="w-6 h-6" />
         </button>
@@ -25,12 +26,12 @@ const Header = ({ onMenuClick }) => {
         </span>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
         {/* User Info */}
-        <div className="flex items-center gap-2.5">
-          <IoPersonCircleOutline className="w-8 h-8 text-primary-900" />
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <IoPersonCircleOutline className="w-7 h-7 sm:w-8 sm:h-8 text-primary-900" />
           <div className="hidden sm:block text-left">
-            <div className="text-xs font-semibold text-slate-800">{user?.name || 'Administrator'}</div>
+            <div className="text-xs font-semibold text-slate-800 max-w-[120px] md:max-w-none truncate">{user?.name || 'Administrator'}</div>
             <div className="text-[10px] text-slate-400 capitalize">{user?.role?.replace('_', ' ') || 'Admin'}</div>
           </div>
         </div>
@@ -39,7 +40,7 @@ const Header = ({ onMenuClick }) => {
         <button
           onClick={handleLogout}
           title="Logout"
-          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+          className="p-1.5 sm:p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
         >
           <IoLogOutOutline className="w-5 h-5" />
         </button>

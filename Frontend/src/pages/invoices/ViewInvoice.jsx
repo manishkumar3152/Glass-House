@@ -56,7 +56,7 @@ const ViewInvoice = () => {
   return (
     <div className="space-y-5 pb-16">
       {/* Top Bar */}
-      <div className="flex items-center justify-between bg-white p-4 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
           <Link
             to="/invoices"
@@ -65,8 +65,8 @@ const ViewInvoice = () => {
             <IoArrowBackOutline className="w-5 h-5" />
           </Link>
           <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-lg font-bold text-slate-800">{currentInvoice.invoiceNumber}</h2>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-slate-800">{currentInvoice.invoiceNumber}</h2>
               <span
                 className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
                   isApproved
@@ -79,20 +79,22 @@ const ViewInvoice = () => {
                 {currentInvoice.invoiceStatus}
               </span>
             </div>
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-slate-500 truncate max-w-sm">
               Customer: {currentInvoice.customerSnapshot?.customerName || currentInvoice.customer?.customerName}
             </p>
           </div>
         </div>
 
         {!isApproved && !isCancelled && (
-          <Link
-            to={`/invoices/edit/${currentInvoice._id}`}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-white border border-slate-300 text-slate-700 hover:bg-slate-50"
-          >
-            <IoCreateOutline className="w-4 h-4 text-blue-600" />
-            Edit Invoice
-          </Link>
+          <div className="self-start sm:self-auto">
+            <Link
+              to={`/invoices/edit/${currentInvoice._id}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 transition-colors"
+            >
+              <IoCreateOutline className="w-4 h-4 text-blue-600" />
+              Edit Invoice
+            </Link>
+          </div>
         )}
       </div>
 
@@ -107,7 +109,7 @@ const ViewInvoice = () => {
       />
 
       {/* Exact 2-Page Visual Representation */}
-      <div className="rounded-xl overflow-hidden border border-slate-300 shadow-md">
+      <div className="rounded-xl overflow-x-auto border border-slate-300 shadow-md">
         <InvoicePreview invoice={currentInvoice} company={currentInvoice.companySnapshot} />
       </div>
 

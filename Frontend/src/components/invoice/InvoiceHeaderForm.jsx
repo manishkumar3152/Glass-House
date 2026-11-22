@@ -18,51 +18,51 @@ const InvoiceHeaderForm = ({
   const extraUnitLabel = lUnitUpper === 'INCH' ? 'Inches' : lUnitUpper;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
+    <div className="bg-white rounded-lg border border-slate-200 p-3.5 sm:p-5 shadow-xs">
       {/* Top Header: Custom PI Number & Status */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-3 mb-3">
-        <div className="flex-1 max-w-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3 mb-3">
+        <div className="flex-1 w-full max-w-lg">
           <label className="block text-xs font-bold text-primary-900 uppercase tracking-wider mb-1">
             Proforma Invoice (PI) Number
           </label>
           {readOnly ? (
-            <span className="font-mono font-bold text-lg text-primary-900">
+            <span className="font-mono font-bold text-base sm:text-lg text-primary-900">
               {formData.invoiceNumber || 'Auto-generated on Save'}
             </span>
           ) : (
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
                 <input
                   type="text"
                   value={formData.invoiceNumber || ''}
                   onChange={(e) => handleFieldChange('invoiceNumber', e.target.value)}
                   placeholder="e.g. PI-26-27-8521 (Leave blank for auto sequence)"
-                  className="w-full px-3 py-1.5 border border-primary-300 rounded font-mono font-bold text-primary-900 text-sm focus:ring-2 focus:ring-primary-500 bg-amber-50/30"
+                  className="w-full px-3 py-1.5 border border-primary-300 rounded font-mono font-bold text-primary-900 text-xs sm:text-sm focus:ring-2 focus:ring-primary-500 bg-amber-50/30"
                 />
                 {formData.invoiceNumber && (
                   <button
                     type="button"
                     onClick={() => handleFieldChange('invoiceNumber', '')}
-                    className="text-xs text-slate-500 hover:text-rose-600 px-2 py-1 border border-slate-200 rounded whitespace-nowrap bg-white"
+                    className="text-xs text-slate-500 hover:text-rose-600 px-2.5 py-1.5 border border-slate-200 rounded whitespace-nowrap bg-white self-start sm:self-auto"
                     title="Clear custom PI Number to use system auto-sequence"
                   >
                     Reset to Auto
                   </button>
                 )}
               </div>
-              <span className="text-[11px] text-slate-500 mt-0.5 block">
+              <span className="text-[11px] text-slate-500 mt-1 block">
                 Type any custom PI number (e.g. <b>PI-26-27-8521</b>) or leave empty for auto-generated sequence.
               </span>
             </div>
           )}
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 self-start sm:self-auto">
           <span className="text-xs font-medium text-slate-500">Status:</span>
           <Badge status={formData.invoiceStatus || 'Draft'} />
         </div>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3">
         {/* PI Date */}
         <div>
           <Input

@@ -6,8 +6,11 @@
   align-items: center;
   gap: 24px;
   background-color: #525659;
-  padding: 24px;
+  padding: 24px 12px;
   min-height: 100vh;
+  overflow-x: auto;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .pi-preview-page {

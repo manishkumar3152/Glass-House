@@ -76,16 +76,18 @@ const ProcessingCharges = () => {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Processing Charges Master</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-800">Processing Charges Master</h2>
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Holes, cutting, grinding, polishing, beveling and notching charges.
           </p>
         </div>
-        <Button variant="primary" icon={IoAddOutline} size="sm" onClick={() => handleOpenModal()}>
-          Add Processing Charge
-        </Button>
+        <div className="self-start sm:self-auto">
+          <Button variant="primary" icon={IoAddOutline} size="sm" onClick={() => handleOpenModal()}>
+            Add Processing Charge
+          </Button>
+        </div>
       </div>
 
       <Card noPadding>
@@ -93,7 +95,7 @@ const ProcessingCharges = () => {
           {loading && processingCharges.length === 0 ? (
             <Loader text="Loading processing charges..." />
           ) : (
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[620px]">
               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
                 <tr>
                   <th className="p-3">Processing Name</th>
@@ -157,7 +159,7 @@ const ProcessingCharges = () => {
             placeholder="e.g. Small Hole (Up to 25mm)"
           />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <div>
               <label className="text-xs font-semibold text-slate-700">Billing Unit</label>
               <select

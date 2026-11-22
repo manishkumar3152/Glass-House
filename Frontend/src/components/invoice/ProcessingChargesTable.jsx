@@ -42,26 +42,28 @@ const ProcessingChargesTable = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm">
-      <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-primary-900 uppercase tracking-wide">
+    <div className="bg-white rounded-lg border border-slate-200 overflow-hidden shadow-xs">
+      <div className="px-3.5 sm:px-4 py-3 bg-slate-50 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
+        <h3 className="text-xs sm:text-sm font-bold text-primary-900 uppercase tracking-wide">
           2. Processing & Value-Added Charges ({items.length})
         </h3>
         {!readOnly && (
-          <Button
-            type="button"
-            size="sm"
-            variant="outline"
-            onClick={onAddItem}
-            icon={IoAddOutline}
-          >
-            Add Processing Charge
-          </Button>
+          <div className="self-start sm:self-auto">
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={onAddItem}
+              icon={IoAddOutline}
+            >
+              Add Processing Charge
+            </Button>
+          </div>
         )}
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-left border-collapse">
+        <table className="w-full text-left border-collapse min-w-[650px]">
           <thead className="bg-slate-100 text-slate-700 uppercase font-semibold text-[11px] border-b border-slate-300">
             <tr>
               <th className="p-2.5">Charge Name / Description</th>

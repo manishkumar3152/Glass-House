@@ -88,16 +88,18 @@ const GlassSpecifications = () => {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Glass Specification Master</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-800">Glass Specification Master</h2>
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Configure glass types, thickness, densities, and default rates.
           </p>
         </div>
-        <Button variant="primary" icon={IoAddOutline} size="sm" onClick={() => handleOpenModal()}>
-          Add Specification
-        </Button>
+        <div className="self-start sm:self-auto">
+          <Button variant="primary" icon={IoAddOutline} size="sm" onClick={() => handleOpenModal()}>
+            Add Specification
+          </Button>
+        </div>
       </div>
 
       <Card noPadding>
@@ -105,7 +107,7 @@ const GlassSpecifications = () => {
           {loading && glassSpecifications.length === 0 ? (
             <Loader text="Loading specifications..." />
           ) : (
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[700px]">
               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
                 <tr>
                   <th className="p-3">Specification Name</th>
@@ -173,7 +175,7 @@ const GlassSpecifications = () => {
             placeholder="e.g. 6mm Clear Flat Tuff Glass"
           />
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <Input
               label="Glass Code"
               value={formData.glassCode}
@@ -190,7 +192,7 @@ const GlassSpecifications = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <Input
               label="Glass Type"
               value={formData.glassType}
@@ -205,7 +207,7 @@ const GlassSpecifications = () => {
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
             <Input
               label="Default Rate (₹)"
               type="number"

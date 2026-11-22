@@ -23,21 +23,21 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-100 flex items-center justify-center p-3 sm:p-6">
       <div className="max-w-md w-full bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
         {/* Header */}
-        <div className="bg-primary-900 px-8 py-8 text-center text-white">
+        <div className="bg-primary-900 px-5 sm:px-8 py-6 sm:py-8 text-center text-white">
           <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
             <IoShieldCheckmarkOutline className="w-7 h-7 text-white" />
           </div>
-          <h2 className="text-xl font-bold tracking-tight">GlassHouse ERP</h2>
+          <h2 className="text-lg sm:text-xl font-bold tracking-tight">GlassHouse ERP</h2>
           <p className="text-xs text-primary-200 mt-1">
             Enterprise Proforma Invoice Management System
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-8 space-y-5">
+        <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-4 sm:space-y-5">
           {error && (
             <div className="p-3 text-xs bg-rose-50 border border-rose-200 text-rose-700 rounded-lg">
               {error}

@@ -91,24 +91,24 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Proforma Invoice Overview</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-800">Proforma Invoice Overview</h2>
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Real-time management for glass specifications, processing charges & quotations.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             to="/customers"
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
           >
             <IoPeopleOutline className="w-4 h-4 text-slate-500" />
             Customers
           </Link>
           <Link
             to="/invoices/create"
-            className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-md bg-primary-900 text-white hover:bg-primary-800 transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold rounded-md bg-primary-900 text-white hover:bg-primary-800 transition-colors shadow-xs"
           >
             <IoAddOutline className="w-4 h-4" />
             Create Proforma Invoice
@@ -116,8 +116,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* 8 Metric Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      {/* 8 Metric Cards - Responsive across Mobile, Tablet, Laptop, Desktop, 2XL */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 2xl:grid-cols-8 gap-3 sm:gap-4">
         {statCards.map((card, idx) => {
           const Icon = card.icon;
           const CardContent = (
@@ -216,7 +216,7 @@ const Dashboard = () => {
         noPadding
       >
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
+          <table className="w-full text-left border-collapse text-xs min-w-[680px]">
             <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
               <tr>
                 <th className="p-3">PI Number</th>

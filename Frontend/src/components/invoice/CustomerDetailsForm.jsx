@@ -26,7 +26,7 @@ const CustomerDetailsForm = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
+    <div className="bg-white rounded-lg border border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-3">
         <h3 className="text-sm font-bold text-primary-900 uppercase tracking-wide">
           Customer & Delivery Information
@@ -49,7 +49,7 @@ const CustomerDetailsForm = ({
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5">
         {/* Billing Address Column */}
         <div className="space-y-3 bg-slate-50/70 p-3.5 rounded-lg border border-slate-200">
           <div className="text-xs font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200 pb-1">
@@ -66,7 +66,7 @@ const CustomerDetailsForm = ({
               className="w-full mt-1 px-3 py-1.5 text-xs rounded border border-slate-300 focus:ring-1 focus:ring-primary-500 focus:outline-none disabled:bg-slate-100"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
             <Input
               label="Contact Person"
               value={formData.contactPerson || ''}
@@ -107,7 +107,7 @@ const CustomerDetailsForm = ({
               className="w-full mt-1 px-3 py-1.5 text-xs rounded border border-slate-300 focus:ring-1 focus:ring-primary-500 focus:outline-none disabled:bg-slate-100"
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5">
             <Input
               label="Expected Delivery Date"
               type="date"

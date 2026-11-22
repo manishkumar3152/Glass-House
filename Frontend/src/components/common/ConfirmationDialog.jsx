@@ -16,12 +16,12 @@ const ConfirmationDialog = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} maxWidth="max-w-md">
       <div className="flex flex-col gap-4">
-        <p className="text-sm text-slate-600 leading-relaxed">{message}</p>
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
-          <Button variant="secondary" onClick={onClose} disabled={loading}>
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{message}</p>
+        <div className="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+          <Button variant="secondary" onClick={onClose} disabled={loading} size="sm">
             {cancelText}
           </Button>
-          <Button variant={confirmVariant} onClick={onConfirm} loading={loading}>
+          <Button variant={confirmVariant} onClick={onConfirm} loading={loading} size="sm">
             {confirmText}
           </Button>
         </div>

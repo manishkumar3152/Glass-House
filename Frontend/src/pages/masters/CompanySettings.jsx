@@ -76,13 +76,13 @@ const CompanySettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center text-primary-900">
+          <div className="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center text-primary-900 shrink-0">
             <IoBusinessOutline className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-800">Company Master Settings</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-800">Company Master Settings</h2>
             <p className="text-xs text-slate-500">
               Details configured here automatically appear on all generated proforma invoices and bank receipts.
             </p>
@@ -90,10 +90,10 @@ const CompanySettings = () => {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
         {/* Business Credentials */}
         <Card title="Corporate Details & Registration">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <Input
               label="Company Legal Name"
               name="companyName"
@@ -149,7 +149,7 @@ const CompanySettings = () => {
 
         {/* Bank Credentials */}
         <Card title="Bank Account Details (Appears on Page 2 for RTGS/NEFT)">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
             <Input label="Bank Name" name="bankName" value={formData.bankName} onChange={handleChange} />
             <Input label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleChange} />
             <Input label="IFSC / RTGS Code" name="ifscCode" value={formData.ifscCode} onChange={handleChange} />

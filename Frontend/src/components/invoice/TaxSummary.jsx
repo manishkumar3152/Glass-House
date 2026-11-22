@@ -17,18 +17,18 @@ const TaxSummary = ({ calculation = {}, readOnly = false, onTaxTypeToggle }) => 
   } = calculation;
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-5 shadow-sm space-y-4">
-      <div className="flex items-center justify-between border-b border-slate-200 pb-2">
-        <h3 className="text-sm font-bold text-primary-900 uppercase tracking-wide">
+    <div className="bg-white rounded-lg border border-slate-200 p-3.5 sm:p-5 shadow-xs space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 border-b border-slate-200 pb-2.5">
+        <h3 className="text-xs sm:text-sm font-bold text-primary-900 uppercase tracking-wide">
           4. Invoice Financial Summary & Tax
         </h3>
         {!readOnly && onTaxTypeToggle && (
-          <div className="flex items-center gap-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-xs">
             <span className="text-slate-600 font-medium">Tax Mode:</span>
             <button
               type="button"
               onClick={() => onTaxTypeToggle(!taxDetails.isInterState)}
-              className="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold border border-slate-300"
+              className="px-2.5 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold border border-slate-300 transition-colors"
             >
               {taxDetails.isInterState ? 'IGST (Inter-State 18%)' : 'CGST + SGST (Intra-State 9%+9%)'}
             </button>
@@ -36,7 +36,7 @@ const TaxSummary = ({ calculation = {}, readOnly = false, onTaxTypeToggle }) => 
         )}
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6 items-start">
         {/* Left pane: Words & Notes */}
         <div className="space-y-4">
           <div className="bg-slate-50 border border-slate-200 rounded-lg p-3.5">

@@ -29,24 +29,26 @@ const CustomerList = () => {
   return (
     <div className="space-y-5">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div>
-          <h2 className="text-xl font-bold text-slate-800">Customer Management</h2>
-          <p className="text-xs text-slate-500 mt-1">
+          <h2 className="text-lg sm:text-xl font-bold text-slate-800">Customer Management</h2>
+          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
             Maintain customer billing addresses, delivery addresses, and GST credentials.
           </p>
         </div>
-        <Link to="/customers/create">
-          <Button variant="primary" icon={IoAddOutline} size="sm">
-            Add New Customer
-          </Button>
-        </Link>
+        <div className="self-start sm:self-auto">
+          <Link to="/customers/create">
+            <Button variant="primary" icon={IoAddOutline} size="sm">
+              Add New Customer
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {/* Search & Filters */}
       <Card noPadding>
-        <div className="p-4 border-b border-slate-200 bg-slate-50 flex items-center justify-between gap-4">
-          <div className="relative w-full max-w-md">
+        <div className="p-3 sm:p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <div className="relative w-full sm:max-w-md">
             <IoSearchOutline className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
             <input
               type="text"
@@ -56,7 +58,7 @@ const CustomerList = () => {
               className="w-full pl-9 pr-4 py-1.5 text-xs rounded-md border border-slate-300 focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white"
             />
           </div>
-          <div className="text-xs text-slate-500 font-medium">
+          <div className="text-xs text-slate-500 font-medium self-end sm:self-auto">
             Total Customers: {pagination?.total || customers.length}
           </div>
         </div>
@@ -66,7 +68,7 @@ const CustomerList = () => {
           {loading && customers.length === 0 ? (
             <Loader text="Loading customers..." />
           ) : (
-            <table className="w-full text-left border-collapse text-xs">
+            <table className="w-full text-left border-collapse text-xs min-w-[760px]">
               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
                 <tr>
                   <th className="p-3">Customer Name</th>

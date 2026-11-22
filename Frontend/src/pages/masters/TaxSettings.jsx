@@ -64,13 +64,13 @@ const TaxSettings = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-800">
+          <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-800 shrink-0">
             <IoCashOutline className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-bold text-slate-800">Tax & GST Configuration</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-slate-800">Tax & GST Configuration</h2>
             <p className="text-xs text-slate-500">
               Configure statutory Goods and Services Tax slabs for inter-state and intra-state invoicing.
             </p>
@@ -80,7 +80,7 @@ const TaxSettings = () => {
 
       <form onSubmit={handleSubmit}>
         <Card title="GST Slabs & Rules">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
             <Input
               label="Standard Tax Name"
               name="taxName"

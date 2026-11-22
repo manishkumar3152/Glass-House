@@ -15,13 +15,20 @@ import {
   IoReaderOutline,
   IoAddCircleOutline,
   IoTimeOutline,
-  IoCheckmarkDoneCircleOutline
+  IoCheckmarkDoneCircleOutline,
+  IoCloseOutline
 } from 'react-icons/io5';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
   const [invoicesOpen, setInvoicesOpen] = useState(location.pathname.startsWith('/invoices'));
   const [mastersOpen, setMastersOpen] = useState(location.pathname.startsWith('/masters'));
+
+  const handleLinkClick = () => {
+    if (window.innerWidth < 1024) {
+      setIsOpen(false);
+    }
+  };
 
   const navItemClass = ({ isActive }) =>
     `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
@@ -42,37 +49,48 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       {/* Mobile backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-xs lg:hidden transition-opacity"
           onClick={() => setIsOpen(false)}
         />
       )}
 
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 lg:translate-x-0 ${
+        className={`fixed top-0 bottom-0 left-0 z-40 w-64 sm:w-72 lg:w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Brand Logo Header */}
-        <div className="h-16 px-6 border-b border-slate-200 flex items-center gap-3 bg-white">
-          <div className="w-8 h-8 rounded-lg bg-primary-900 flex items-center justify-center text-white font-bold text-base shadow-sm">
-            G
+        <div className="h-16 px-5 sm:px-6 border-b border-slate-200 flex items-center justify-between bg-white">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-primary-900 flex items-center justify-center text-white font-bold text-base shadow-sm">
+              G
+            </div>
+            <div>
+              <h1 className="font-bold text-slate-800 text-sm tracking-wide">GlassHouse ERP</h1>
+              <p className="text-[10px] text-slate-400 uppercase font-semibold">Proforma Suite v2.0</p>
+            </div>
           </div>
-          <div>
-            <h1 className="font-bold text-slate-800 text-sm tracking-wide">GlassHouse ERP</h1>
-            <p className="text-[10px] text-slate-400 uppercase font-semibold">Proforma Suite v2.0</p>
-          </div>
+          {/* Mobile close button */}
+          <button
+            type="button"
+            onClick={() => setIsOpen(false)}
+            className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md"
+            aria-label="Close menu"
+          >
+            <IoCloseOutline className="w-5 h-5" />
+          </button>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 py-4 space-y-1.5 overflow-y-auto">
           {/* Dashboard */}
-          <NavLink to="/" end className={navItemClass}>
+          <NavLink to="/" end className={navItemClass} onClick={handleLinkClick}>
             <IoGridOutline className="w-4 h-4" />
             <span>Dashboard</span>
           </NavLink>
 
           {/* Customers */}
-          <NavLink to="/customers" className={navItemClass}>
+          <NavLink to="/customers" className={navItemClass} onClick={handleLinkClick}>
             <IoPeopleOutline className="w-4 h-4" />
             <span>Customers</span>
           </NavLink>
@@ -97,19 +115,19 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
             {invoicesOpen && (
               <div className="mt-1 pl-7 space-y-1">
-                <NavLink to="/invoices" end className={subItemClass}>
+                <NavLink to="/invoices" end className={subItemClass} onClick={handleLinkClick}>
                   <IoDocumentTextOutline className="w-3.5 h-3.5" />
                   <span>All Invoices</span>
                 </NavLink>
-                <NavLink to="/invoices/create" className={subItemClass}>
+                <NavLink to="/invoices/create" className={subItemClass} onClick={handleLinkClick}>
                   <IoAddCircleOutline className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Create Invoice</span>
                 </NavLink>
-                <NavLink to="/invoices?status=Pending Approval" className={subItemClass}>
+                <NavLink to="/invoices?status=Pending Approval" className={subItemClass} onClick={handleLinkClick}>
                   <IoTimeOutline className="w-3.5 h-3.5 text-blue-600" />
                   <span>Pending Approval</span>
                 </NavLink>
-                <NavLink to="/invoices?status=Approved" className={subItemClass}>
+                <NavLink to="/invoices?status=Approved" className={subItemClass} onClick={handleLinkClick}>
                   <IoCheckmarkDoneCircleOutline className="w-3.5 h-3.5 text-emerald-600" />
                   <span>Approved Invoices</span>
                 </NavLink>
@@ -137,23 +155,23 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
             {mastersOpen && (
               <div className="mt-1 pl-7 space-y-1">
-                <NavLink to="/masters/company" className={subItemClass}>
+                <NavLink to="/masters/company" className={subItemClass} onClick={handleLinkClick}>
                   <IoBusinessOutline className="w-3.5 h-3.5" />
                   <span>Company Settings</span>
                 </NavLink>
-                <NavLink to="/masters/glass-specifications" className={subItemClass}>
+                <NavLink to="/masters/glass-specifications" className={subItemClass} onClick={handleLinkClick}>
                   <IoLayersOutline className="w-3.5 h-3.5" />
                   <span>Glass Specs</span>
                 </NavLink>
-                <NavLink to="/masters/processing-charges" className={subItemClass}>
+                <NavLink to="/masters/processing-charges" className={subItemClass} onClick={handleLinkClick}>
                   <IoHammerOutline className="w-3.5 h-3.5" />
                   <span>Processing Charges</span>
                 </NavLink>
-                <NavLink to="/masters/tax" className={subItemClass}>
+                <NavLink to="/masters/tax" className={subItemClass} onClick={handleLinkClick}>
                   <IoCashOutline className="w-3.5 h-3.5" />
                   <span>Tax Configuration</span>
                 </NavLink>
-                <NavLink to="/masters/terms" className={subItemClass}>
+                <NavLink to="/masters/terms" className={subItemClass} onClick={handleLinkClick}>
                   <IoReaderOutline className="w-3.5 h-3.5" />
                   <span>Terms & Conditions</span>
                 </NavLink>

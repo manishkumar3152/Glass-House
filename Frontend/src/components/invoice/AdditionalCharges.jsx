@@ -14,12 +14,12 @@ const AdditionalCharges = ({
   };
 
   return (
-    <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-sm">
-      <h3 className="text-sm font-bold text-primary-900 uppercase tracking-wide border-b border-slate-200 pb-2 mb-3">
+    <div className="bg-white rounded-lg border border-slate-200 p-3.5 sm:p-5 shadow-xs">
+      <h3 className="text-xs sm:text-sm font-bold text-primary-900 uppercase tracking-wide border-b border-slate-200 pb-2 mb-3">
         3. Additional Charges Configuration
       </h3>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4">
         {/* Insurance % */}
         <div>
           <Input
