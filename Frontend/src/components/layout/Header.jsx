@@ -16,7 +16,7 @@ const Header = ({ onMenuClick }) => {
       <div className="flex items-center gap-2 sm:gap-3">
         <button
           onClick={onMenuClick}
-          className="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-md transition-colors"
+          className="lg:hidden p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded transition-colors"
           aria-label="Open navigation menu"
         >
           <IoMenuOutline className="w-6 h-6" />
@@ -40,7 +40,7 @@ const Header = ({ onMenuClick }) => {
         <button
           onClick={handleLogout}
           title="Logout"
-          className="p-1.5 sm:p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+          className="p-1.5 sm:p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
         >
           <IoLogOutOutline className="w-5 h-5" />
         </button>

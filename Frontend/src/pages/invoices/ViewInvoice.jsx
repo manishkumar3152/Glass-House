@@ -56,11 +56,11 @@ const ViewInvoice = () => {
   return (
     <div className="space-y-5 pb-16">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded border border-slate-200 shadow-xs">
         <div className="flex items-center gap-3">
           <Link
             to="/invoices"
-            className="p-1.5 text-slate-500 hover:text-slate-800 rounded-md hover:bg-slate-100"
+            className="p-1.5 text-slate-500 hover:text-slate-800 rounded hover:bg-slate-100"
           >
             <IoArrowBackOutline className="w-5 h-5" />
           </Link>
@@ -68,13 +68,12 @@ const ViewInvoice = () => {
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-base sm:text-lg font-bold text-slate-800">{currentInvoice.invoiceNumber}</h2>
               <span
-                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${
-                  isApproved
-                    ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
-                    : isCancelled
+                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full border ${isApproved
+                  ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                  : isCancelled
                     ? 'bg-rose-100 text-rose-800 border-rose-200'
                     : 'bg-amber-100 text-amber-800 border-amber-200'
-                }`}
+                  }`}
               >
                 {currentInvoice.invoiceStatus}
               </span>
@@ -109,7 +108,7 @@ const ViewInvoice = () => {
       />
 
       {/* Exact 2-Page Visual Representation */}
-      <div className="rounded-xl overflow-x-auto border border-slate-300 shadow-md">
+      <div className="rounded overflow-x-auto border border-slate-300 shadow-md">
         <InvoicePreview invoice={currentInvoice} company={currentInvoice.companySnapshot} />
       </div>
 
@@ -122,22 +121,22 @@ const ViewInvoice = () => {
           confirmModal.type === 'approve'
             ? 'Approve Invoice'
             : confirmModal.type === 'cancel'
-            ? 'Cancel Invoice'
-            : 'Duplicate Invoice'
+              ? 'Cancel Invoice'
+              : 'Duplicate Invoice'
         }
         message={
           confirmModal.type === 'approve'
             ? 'Approve and lock this invoice? Once approved, it cannot be modified.'
             : confirmModal.type === 'cancel'
-            ? 'Cancel this proforma invoice?'
-            : 'Duplicate this invoice to create a new draft with the next PI number?'
+              ? 'Cancel this proforma invoice?'
+              : 'Duplicate this invoice to create a new draft with the next PI number?'
         }
         confirmText={
           confirmModal.type === 'approve'
             ? 'Approve & Lock'
             : confirmModal.type === 'cancel'
-            ? 'Cancel Invoice'
-            : 'Duplicate'
+              ? 'Cancel Invoice'
+              : 'Duplicate'
         }
         confirmVariant={confirmModal.type === 'approve' ? 'success' : 'danger'}
       />

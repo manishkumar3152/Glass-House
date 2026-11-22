@@ -2,7 +2,7 @@ import React from 'react';
 
 const Card = ({ children, title, subtitle, headerActions, className = '', noPadding = false }) => {
   return (
-    <div className={`bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden ${className}`}>
+    <div className={`bg-white rounded border border-slate-200 shadow-xs overflow-hidden ${className}`}>
       {(title || headerActions) && (
         <div className="px-3.5 sm:px-5 py-3 sm:py-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4">
           <div className="min-w-0">

@@ -31,17 +31,15 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   };
 
   const navItemClass = ({ isActive }) =>
-    `flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-      isActive
-        ? 'bg-primary-900 text-white shadow-sm'
-        : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+    `flex items-center gap-3 px-3.5 py-2.5 rounded text-sm font-medium transition-colors ${isActive
+      ? 'bg-primary-900 text-white shadow-sm'
+      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
     }`;
 
   const subItemClass = ({ isActive }) =>
-    `flex items-center gap-2.5 px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
-      isActive
-        ? 'text-primary-900 font-semibold bg-primary-50'
-        : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+    `flex items-center gap-2.5 px-3 py-1.5 rounded text-xs font-medium transition-colors ${isActive
+      ? 'text-primary-900 font-semibold bg-primary-50'
+      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
     }`;
 
   return (
@@ -55,14 +53,13 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       )}
 
       <aside
-        className={`fixed top-0 bottom-0 left-0 z-40 w-64 sm:w-72 lg:w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`fixed top-0 bottom-0 left-0 z-40 w-64 sm:w-72 lg:w-64 bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 ease-in-out lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
       >
         {/* Brand Logo Header */}
         <div className="h-16 px-5 sm:px-6 border-b border-slate-200 flex items-center justify-between bg-white">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary-900 flex items-center justify-center text-white font-bold text-base shadow-sm">
+            <div className="w-8 h-8 rounded bg-primary-900 flex items-center justify-center text-white font-bold text-base shadow-sm">
               G
             </div>
             <div>
@@ -74,7 +71,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           <button
             type="button"
             onClick={() => setIsOpen(false)}
-            className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-md"
+            className="lg:hidden p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded"
             aria-label="Close menu"
           >
             <IoCloseOutline className="w-5 h-5" />
@@ -100,7 +97,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <button
               type="button"
               onClick={() => setInvoicesOpen(!invoicesOpen)}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <IoDocumentTextOutline className="w-4 h-4" />
@@ -140,7 +137,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <button
               type="button"
               onClick={() => setMastersOpen(!mastersOpen)}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
             >
               <div className="flex items-center gap-3">
                 <IoSettingsOutline className="w-4 h-4" />

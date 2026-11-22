@@ -24,10 +24,10 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-3 sm:p-6">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+      <div className="max-w-md w-full bg-white rounded shadow-lg border border-slate-200 overflow-hidden">
         {/* Header */}
         <div className="bg-primary-900 px-5 sm:px-8 py-6 sm:py-8 text-center text-white">
-          <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center mx-auto mb-3">
+          <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center mx-auto mb-3">
             <IoShieldCheckmarkOutline className="w-7 h-7 text-white" />
           </div>
           <h2 className="text-lg sm:text-xl font-bold tracking-tight">GlassHouse ERP</h2>
@@ -39,7 +39,7 @@ const Login = () => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-4 sm:p-8 space-y-4 sm:space-y-5">
           {error && (
-            <div className="p-3 text-xs bg-rose-50 border border-rose-200 text-rose-700 rounded-lg">
+            <div className="p-3 text-xs bg-rose-50 border border-rose-200 text-rose-700 rounded">
               {error}
             </div>
           )}
@@ -66,7 +66,7 @@ const Login = () => {
             />
           </div>
 
-          <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 text-[11px] text-slate-500">
+          <div className="bg-slate-50 border border-slate-200 rounded p-3 text-[11px] text-slate-500">
             <div className="font-semibold text-slate-700 mb-1">Pre-configured Demo Credentials:</div>
             <div>• Super Admin: <span className="font-mono text-slate-800">admin@glasshouse.com</span> / <span className="font-mono text-slate-800">password123</span></div>
             <div>• Sales Exec: <span className="font-mono text-slate-800">sales@glasshouse.com</span> / <span className="font-mono text-slate-800">password123</span></div>

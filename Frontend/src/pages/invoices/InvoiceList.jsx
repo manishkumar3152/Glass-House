@@ -1,6 +1,366 @@
+// import React, { useEffect, useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { Link, useSearchParams } from 'react-router-dom';
+// import {
+//   fetchInvoices,
+//   approveInvoice,
+//   cancelInvoice,
+//   duplicateInvoice,
+//   deleteInvoice
+// } from '../../redux/slices/invoiceSlice';
+// import { fetchCustomers } from '../../redux/slices/customerSlice';
+// import { invoiceApi } from '../../api/invoiceApi';
+// import Card from '../../components/common/Card';
+// import Button from '../../components/common/Button';
+// import Badge from '../../components/common/Badge';
+// import ConfirmationDialog from '../../components/common/ConfirmationDialog';
+// import Loader from '../../components/common/Loader';
+// import { formatCurrency } from '../../utils/currencyFormatter';
+// import { formatDate } from '../../utils/dateFormatter';
+// import {
+//   IoAddOutline,
+//   IoSearchOutline,
+//   IoEyeOutline,
+//   IoCreateOutline,
+//   IoDownloadOutline,
+//   IoCopyOutline,
+//   IoCheckmarkCircleOutline,
+//   IoCloseCircleOutline,
+//   IoTrashOutline,
+//   IoFilterOutline
+// } from 'react-icons/io5';
+
+// const InvoiceList = () => {
+//   const dispatch = useDispatch();
+//   const [searchParams, setSearchParams] = useSearchParams();
+//   const { invoices, pagination, loading } = useSelector((state) => state.invoices);
+//   const { customers } = useSelector((state) => state.customers);
+
+//   const [search, setSearch] = useState('');
+//   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || '');
+//   const [customerFilter, setCustomerFilter] = useState('');
+//   const [startDate, setStartDate] = useState('');
+//   const [endDate, setEndDate] = useState('');
+
+//   const [confirmModal, setConfirmModal] = useState({
+//     isOpen: false,
+//     type: null,
+//     invoice: null
+//   });
+
+//   useEffect(() => {
+//     dispatch(fetchCustomers({ limit: 100 }));
+//   }, [dispatch]);
+
+//   useEffect(() => {
+//     const params = {};
+//     if (search) params.search = search;
+//     if (statusFilter) params.status = statusFilter;
+//     if (customerFilter) params.customer = customerFilter;
+//     if (startDate) params.startDate = startDate;
+//     if (endDate) params.endDate = endDate;
+
+//     dispatch(fetchInvoices(params));
+//   }, [dispatch, search, statusFilter, customerFilter, startDate, endDate]);
+
+//   const handleAction = async () => {
+//     const { type, invoice } = confirmModal;
+//     if (!invoice) return;
+
+//     if (type === 'approve') {
+//       await dispatch(approveInvoice(invoice._id));
+//     } else if (type === 'cancel') {
+//       await dispatch(cancelInvoice(invoice._id));
+//     } else if (type === 'duplicate') {
+//       await dispatch(duplicateInvoice(invoice._id));
+//     } else if (type === 'delete') {
+//       await dispatch(deleteInvoice(invoice._id));
+//     }
+
+//     setConfirmModal({ isOpen: false, type: null, invoice: null });
+//   };
+
+//   const handleDownloadPdf = (invoice) => {
+//     window.open(invoiceApi.getPdfUrl(invoice._id), '_blank');
+//   };
+
+//   return (
+//     <div className="space-y-5">
+//       {/* Top Banner */}
+//       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded border border-slate-200 shadow-xs">
+//         <div>
+//           <h2 className="text-lg sm:text-xl font-bold text-slate-800">Proforma Invoices (PI)</h2>
+//           <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
+//             Create, approve, search, and download exact two-page proforma invoices.
+//           </p>
+//         </div>
+//         <div className="self-start sm:self-auto">
+//           <Link to="/invoices/create">
+//             <Button variant="primary" icon={IoAddOutline} size="sm">
+//               Create Proforma Invoice
+//             </Button>
+//           </Link>
+//         </div>
+//       </div>
+
+//       {/* Filter Bar */}
+//       <Card noPadding>
+//         <div className="p-3 sm:p-4 bg-slate-50 border-b border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
+//           {/* Search */}
+//           <div className="relative">
+//             <IoSearchOutline className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+//             <input
+//               type="text"
+//               placeholder="Search PI No, PO, Customer..."
+//               value={search}
+//               onChange={(e) => setSearch(e.target.value)}
+//               className="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+//             />
+//           </div>
+
+//           {/* Status Filter */}
+//           <div>
+//             <select
+//               value={statusFilter}
+//               onChange={(e) => setStatusFilter(e.target.value)}
+//               className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+//             >
+//               <option value="">All Statuses</option>
+//               <option value="Draft">Draft</option>
+//               <option value="Pending Approval">Pending Approval</option>
+//               <option value="Approved">Approved</option>
+//               <option value="Cancelled">Cancelled</option>
+//             </select>
+//           </div>
+
+//           {/* Customer Filter */}
+//           <div>
+//             <select
+//               value={customerFilter}
+//               onChange={(e) => setCustomerFilter(e.target.value)}
+//               className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+//             >
+//               <option value="">All Customers</option>
+//               {customers.map((c) => (
+//                 <option key={c._id} value={c._id}>
+//                   {c.customerName}
+//                 </option>
+//               ))}
+//             </select>
+//           </div>
+
+//           {/* Start Date */}
+//           <div>
+//             <input
+//               type="date"
+//               value={startDate}
+//               onChange={(e) => setStartDate(e.target.value)}
+//               className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+//               title="From Date"
+//             />
+//           </div>
+
+//           {/* End Date */}
+//           <div>
+//             <input
+//               type="date"
+//               value={endDate}
+//               onChange={(e) => setEndDate(e.target.value)}
+//               className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+//               title="To Date"
+//             />
+//           </div>
+//         </div>
+
+//         {/* Invoices Table */}
+//         <div className="overflow-x-auto">
+//           {loading && invoices.length === 0 ? (
+//             <Loader text="Loading invoices..." />
+//           ) : (
+//             <table className="w-full text-left border-collapse text-xs min-w-[850px]">
+//               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
+//                 <tr>
+//                   <th className="p-3">PI Number</th>
+//                   <th className="p-3">Date</th>
+//                   <th className="p-3">Customer</th>
+//                   <th className="p-3">PO Ref</th>
+//                   <th className="p-3 text-right">Qty</th>
+//                   <th className="p-3 text-right">Weight</th>
+//                   <th className="p-3 text-right">Before Tax</th>
+//                   <th className="p-3 text-right">Final Amount</th>
+//                   <th className="p-3 text-center">Status</th>
+//                   <th className="p-3 text-right">Actions</th>
+//                 </tr>
+//               </thead>
+//               <tbody className="divide-y divide-slate-100">
+//                 {invoices.length === 0 ? (
+//                   <tr>
+//                     <td colSpan={10} className="p-8 text-center text-slate-400 italic">
+//                       No invoices match the specified criteria.
+//                     </td>
+//                   </tr>
+//                 ) : (
+//                   invoices.map((inv) => (
+//                     <tr key={inv._id} className="hover:bg-slate-50 transition-colors">
+//                       <td className="p-3 font-mono font-bold text-primary-900">
+//                         <Link to={`/invoices/view/${inv._id}`} className="hover:underline">
+//                           {inv.invoiceNumber}
+//                         </Link>
+//                       </td>
+//                       <td className="p-3 text-slate-600">{formatDate(inv.invoiceDate)}</td>
+//                       <td className="p-3 font-medium text-slate-800">
+//                         {inv.customerSnapshot?.customerName || inv.customer?.customerName || 'N/A'}
+//                       </td>
+//                       <td className="p-3 font-mono text-slate-600">{inv.poNumber || '-'}</td>
+//                       <td className="p-3 text-right font-medium">{inv.totalQuantity || 0}</td>
+//                       <td className="p-3 text-right text-slate-600">
+//                         {Number(inv.totalWeight || 0).toFixed(2)} kg
+//                       </td>
+//                       <td className="p-3 text-right text-slate-700 font-medium">
+//                         ₹{formatCurrency(inv.taxableAmount)}
+//                       </td>
+//                       <td className="p-3 text-right font-bold text-slate-900 text-sm">
+//                         ₹{formatCurrency(inv.roundedAmount)}
+//                       </td>
+//                       <td className="p-3 text-center">
+//                         <Badge status={inv.invoiceStatus} />
+//                       </td>
+//                       <td className="p-3 text-right">
+//                         <div className="flex items-center justify-end gap-1.5">
+//                           <Link
+//                             to={`/invoices/view/${inv._id}`}
+//                             className="p-1 text-slate-500 hover:text-primary-900 rounded"
+//                             title="View Invoice"
+//                           >
+//                             <IoEyeOutline className="w-4 h-4" />
+//                           </Link>
+
+//                           {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
+//                             <Link
+//                               to={`/invoices/edit/${inv._id}`}
+//                               className="p-1 text-slate-500 hover:text-blue-600 rounded"
+//                               title="Edit Draft"
+//                             >
+//                               <IoCreateOutline className="w-4 h-4" />
+//                             </Link>
+//                           )}
+
+//                           <button
+//                             type="button"
+//                             onClick={() => handleDownloadPdf(inv)}
+//                             className="p-1 text-slate-500 hover:text-emerald-700 rounded"
+//                             title="Download PDF"
+//                           >
+//                             <IoDownloadOutline className="w-4 h-4" />
+//                           </button>
+
+//                           <button
+//                             type="button"
+//                             onClick={() =>
+//                               setConfirmModal({
+//                                 isOpen: true,
+//                                 type: 'duplicate',
+//                                 invoice: inv
+//                               })
+//                             }
+//                             className="p-1 text-slate-500 hover:text-indigo-600 rounded"
+//                             title="Duplicate as new draft"
+//                           >
+//                             <IoCopyOutline className="w-4 h-4" />
+//                           </button>
+
+//                           {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
+//                             <button
+//                               type="button"
+//                               onClick={() =>
+//                                 setConfirmModal({
+//                                   isOpen: true,
+//                                   type: 'approve',
+//                                   invoice: inv
+//                                 })
+//                               }
+//                               className="p-1 text-slate-400 hover:text-emerald-600 rounded"
+//                               title="Approve & Lock Invoice"
+//                             >
+//                               <IoCheckmarkCircleOutline className="w-4 h-4" />
+//                             </button>
+//                           )}
+
+//                           {inv.invoiceStatus === 'Draft' && (
+//                             <button
+//                               type="button"
+//                               onClick={() =>
+//                                 setConfirmModal({
+//                                   isOpen: true,
+//                                   type: 'delete',
+//                                   invoice: inv
+//                                 })
+//                               }
+//                               className="p-1 text-slate-400 hover:text-rose-600 rounded"
+//                               title="Delete Draft"
+//                             >
+//                               <IoTrashOutline className="w-4 h-4" />
+//                             </button>
+//                           )}
+//                         </div>
+//                       </td>
+//                     </tr>
+//                   ))
+//                 )}
+//               </tbody>
+//             </table>
+//           )}
+//         </div>
+//       </Card>
+
+//       {/* Confirmation Dialog */}
+//       <ConfirmationDialog
+//         isOpen={confirmModal.isOpen}
+//         onClose={() => setConfirmModal({ isOpen: false, type: null, invoice: null })}
+//         onConfirm={handleAction}
+//         title={
+//           confirmModal.type === 'approve'
+//             ? 'Approve Proforma Invoice'
+//             : confirmModal.type === 'duplicate'
+//             ? 'Duplicate Proforma Invoice'
+//             : confirmModal.type === 'cancel'
+//             ? 'Cancel Proforma Invoice'
+//             : 'Delete Draft Invoice'
+//         }
+//         message={
+//           confirmModal.type === 'approve'
+//             ? `Are you sure you want to approve and lock "${confirmModal.invoice?.invoiceNumber}"? Once approved, the calculations and snapshots cannot be altered.`
+//             : confirmModal.type === 'duplicate'
+//             ? `Duplicate "${confirmModal.invoice?.invoiceNumber}"? A new draft invoice will be created with the next sequential PI number.`
+//             : confirmModal.type === 'cancel'
+//             ? `Cancel invoice "${confirmModal.invoice?.invoiceNumber}"?`
+//             : `Permanently delete draft invoice "${confirmModal.invoice?.invoiceNumber}"?`
+//         }
+//         confirmText={
+//           confirmModal.type === 'approve'
+//             ? 'Approve & Lock'
+//             : confirmModal.type === 'duplicate'
+//             ? 'Duplicate'
+//             : confirmModal.type === 'cancel'
+//             ? 'Cancel Invoice'
+//             : 'Delete Draft'
+//         }
+//         confirmVariant={confirmModal.type === 'approve' ? 'success' : 'danger'}
+//       />
+//     </div>
+//   );
+// };
+
+// export default InvoiceList;
+
+
+
+
+
+
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   fetchInvoices,
   approveInvoice,
@@ -27,13 +387,21 @@ import {
   IoCheckmarkCircleOutline,
   IoCloseCircleOutline,
   IoTrashOutline,
-  IoFilterOutline
+  IoFilterOutline,
+  IoArrowBackOutline
 } from 'react-icons/io5';
+
+const filterInputClass =
+  'w-full min-w-0 px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500';
+
+const filterLabelClass =
+  'block text-[11px] font-semibold text-slate-600 mb-1 whitespace-nowrap overflow-hidden text-ellipsis';
 
 const InvoiceList = () => {
   const dispatch = useDispatch();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { invoices, pagination, loading } = useSelector((state) => state.invoices);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { invoices, loading } = useSelector((state) => state.invoices);
   const { customers } = useSelector((state) => state.customers);
 
   const [search, setSearch] = useState('');
@@ -42,11 +410,26 @@ const InvoiceList = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
+  // Filters live in a bottom drawer opened by the filter icon.
+  const [drawerOpen, setDrawerOpen] = useState(false); // drawer mounted
+  const [drawerShown, setDrawerShown] = useState(false); // slide-in animation state
+
+  // Draft values edited inside the drawer; applied only when "Apply" is pressed
+  const [draft, setDraft] = useState({
+    status: '',
+    customer: '',
+    startDate: '',
+    endDate: ''
+  });
+
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     type: null,
     invoice: null
   });
+
+  // Number of active filters inside the panel (search box is always visible, so not counted)
+  const activeFilterCount = [statusFilter, customerFilter, startDate, endDate].filter(Boolean).length;
 
   useEffect(() => {
     dispatch(fetchCustomers({ limit: 100 }));
@@ -62,6 +445,56 @@ const InvoiceList = () => {
 
     dispatch(fetchInvoices(params));
   }, [dispatch, search, statusFilter, customerFilter, startDate, endDate]);
+
+  const openDrawer = () => {
+    setDraft({
+      status: statusFilter,
+      customer: customerFilter,
+      startDate,
+      endDate
+    });
+    setDrawerOpen(true);
+    // next frame so the slide-up transition runs
+    requestAnimationFrame(() => requestAnimationFrame(() => setDrawerShown(true)));
+  };
+
+  const closeDrawer = () => {
+    setDrawerShown(false);
+    setTimeout(() => setDrawerOpen(false), 250);
+  };
+
+  const applyFilters = () => {
+    setStatusFilter(draft.status);
+    setCustomerFilter(draft.customer);
+    setStartDate(draft.startDate);
+    setEndDate(draft.endDate);
+    closeDrawer();
+  };
+
+  const clearFilters = () => {
+    setDraft({ status: '', customer: '', startDate: '', endDate: '' });
+    setStatusFilter('');
+    setCustomerFilter('');
+    setStartDate('');
+    setEndDate('');
+    closeDrawer();
+  };
+
+  // Lock page scroll and close on Escape while the drawer is open
+  useEffect(() => {
+    if (!drawerOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeDrawer();
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', onKey);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [drawerOpen]);
 
   const handleAction = async () => {
     const { type, invoice } = confirmModal;
@@ -87,15 +520,27 @@ const InvoiceList = () => {
   return (
     <div className="space-y-5">
       {/* Top Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
-        <div>
-          <h2 className="text-lg sm:text-xl font-bold text-slate-800">Proforma Invoices (PI)</h2>
-          <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
-            Create, approve, search, and download exact two-page proforma invoices.
-          </p>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          {/* Back button (top left): previous page, or dashboard if there is no history */}
+          <button
+            type="button"
+            onClick={() => (window.history.length > 1 ? navigate(-1) : navigate('/'))}
+            aria-label="Go back"
+            title="Back"
+            className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 inline-flex items-center justify-center rounded border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 hover:text-primary-900 focus:outline-none focus:ring-2 focus:ring-primary-500 transition-colors"
+          >
+            <IoArrowBackOutline className="w-5 h-5" />
+          </button>
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg lg:text-xl font-bold text-slate-800 leading-tight">Proforma Invoices (PI)</h2>
+            <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 sm:mt-1">
+              Create, approve, search, and download proforma invoices.
+            </p>
+          </div>
         </div>
-        <div className="self-start sm:self-auto">
-          <Link to="/invoices/create">
+        <div className="shrink-0 w-full sm:w-auto [&_button]:whitespace-nowrap [&_button]:w-full sm:[&_button]:w-auto [&_button]:justify-center">
+          <Link to="/invoices/create" className="block">
             <Button variant="primary" icon={IoAddOutline} size="sm">
               Create Proforma Invoice
             </Button>
@@ -103,93 +548,64 @@ const InvoiceList = () => {
         </div>
       </div>
 
-      {/* Filter Bar */}
       <Card noPadding>
-        <div className="p-3 sm:p-4 bg-slate-50 border-b border-slate-200 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-3">
-          {/* Search */}
-          <div className="relative">
-            <IoSearchOutline className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search PI No, PO, Customer..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
-            />
-          </div>
+        {/* Toolbar: search + filter icon (always one row); filters open in a bottom drawer */}
+        <div className="p-3 sm:p-4 bg-slate-50 border-b border-slate-200 space-y-3">
+          <div className="flex items-center gap-2">
+            {/* Search */}
+            <div className="relative flex-1 min-w-0">
+              <IoSearchOutline className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+              <input
+                type="text"
+                placeholder="Search PI No, PO, Customer..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full min-w-0 pl-9 pr-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+              />
+            </div>
 
-          {/* Status Filter */}
-          <div>
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
+            {/* Filter icon button */}
+            <button
+              type="button"
+              onClick={openDrawer}
+              aria-haspopup="dialog"
+              aria-expanded={drawerOpen}
+              aria-label="Toggle filters"
+              title="Filters"
+              className={`relative shrink-0 inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 text-xs font-semibold rounded border transition-colors whitespace-nowrap ${drawerOpen || activeFilterCount > 0
+                  ? 'bg-primary-50 border-primary-300 text-primary-900'
+                  : 'bg-white border-slate-300 text-slate-700 hover:bg-slate-100'
+                }`}
             >
-              <option value="">All Statuses</option>
-              <option value="Draft">Draft</option>
-              <option value="Pending Approval">Pending Approval</option>
-              <option value="Approved">Approved</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </div>
-
-          {/* Customer Filter */}
-          <div>
-            <select
-              value={customerFilter}
-              onChange={(e) => setCustomerFilter(e.target.value)}
-              className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
-            >
-              <option value="">All Customers</option>
-              {customers.map((c) => (
-                <option key={c._id} value={c._id}>
-                  {c.customerName}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Start Date */}
-          <div>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
-              title="From Date"
-            />
-          </div>
-
-          {/* End Date */}
-          <div>
-            <input
-              type="date"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              className="w-full px-3 py-1.5 text-xs rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary-500"
-              title="To Date"
-            />
+              <IoFilterOutline className="w-4 h-4" />
+              <span className="hidden sm:inline">Filters</span>
+              {activeFilterCount > 0 && (
+                <span className="inline-flex items-center justify-center min-w-[18px] h-[18px] px-1 rounded-full bg-primary-900 text-white text-[10px] font-bold leading-none">
+                  {activeFilterCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
 
-        {/* Invoices Table */}
-        <div className="overflow-x-auto">
+        {/* Invoices Table: scrolls sideways on small screens, never wraps cells */}
+        <div className="overflow-x-auto overscroll-x-contain">
           {loading && invoices.length === 0 ? (
             <Loader text="Loading invoices..." />
           ) : (
-            <table className="w-full text-left border-collapse text-xs min-w-[850px]">
+            <table className="w-full text-left border-collapse text-xs min-w-[1100px] whitespace-nowrap">
               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
                 <tr>
-                  <th className="p-3">PI Number</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Customer</th>
-                  <th className="p-3">PO Ref</th>
-                  <th className="p-3 text-right">Qty</th>
-                  <th className="p-3 text-right">Weight</th>
-                  <th className="p-3 text-right">Before Tax</th>
-                  <th className="p-3 text-right">Final Amount</th>
-                  <th className="p-3 text-center">Status</th>
-                  <th className="p-3 text-right">Actions</th>
+                  <th className="p-3 min-w-[150px]">PI Number</th>
+                  <th className="p-3 min-w-[100px]">Date</th>
+                  <th className="p-3 min-w-[180px]">Customer</th>
+                  <th className="p-3 min-w-[100px]">PO Ref</th>
+                  <th className="p-3 text-right min-w-[60px]">Qty</th>
+                  <th className="p-3 text-right min-w-[100px]">Weight</th>
+                  <th className="p-3 text-right min-w-[120px]">Before Tax</th>
+                  <th className="p-3 text-right min-w-[130px]">Final Amount</th>
+                  <th className="p-3 text-center min-w-[110px]">Status</th>
+                  <th className="p-3 text-right min-w-[190px]">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -200,118 +616,233 @@ const InvoiceList = () => {
                     </td>
                   </tr>
                 ) : (
-                  invoices.map((inv) => (
-                    <tr key={inv._id} className="hover:bg-slate-50 transition-colors">
-                      <td className="p-3 font-mono font-bold text-primary-900">
-                        <Link to={`/invoices/view/${inv._id}`} className="hover:underline">
-                          {inv.invoiceNumber}
-                        </Link>
-                      </td>
-                      <td className="p-3 text-slate-600">{formatDate(inv.invoiceDate)}</td>
-                      <td className="p-3 font-medium text-slate-800">
-                        {inv.customerSnapshot?.customerName || inv.customer?.customerName || 'N/A'}
-                      </td>
-                      <td className="p-3 font-mono text-slate-600">{inv.poNumber || '-'}</td>
-                      <td className="p-3 text-right font-medium">{inv.totalQuantity || 0}</td>
-                      <td className="p-3 text-right text-slate-600">
-                        {Number(inv.totalWeight || 0).toFixed(2)} kg
-                      </td>
-                      <td className="p-3 text-right text-slate-700 font-medium">
-                        ₹{formatCurrency(inv.taxableAmount)}
-                      </td>
-                      <td className="p-3 text-right font-bold text-slate-900 text-sm">
-                        ₹{formatCurrency(inv.roundedAmount)}
-                      </td>
-                      <td className="p-3 text-center">
-                        <Badge status={inv.invoiceStatus} />
-                      </td>
-                      <td className="p-3 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          <Link
-                            to={`/invoices/view/${inv._id}`}
-                            className="p-1 text-slate-500 hover:text-primary-900 rounded"
-                            title="View Invoice"
-                          >
-                            <IoEyeOutline className="w-4 h-4" />
+                  invoices.map((inv) => {
+                    const customerName =
+                      inv.customerSnapshot?.customerName || inv.customer?.customerName || 'N/A';
+                    return (
+                      <tr key={inv._id} className="hover:bg-slate-50 transition-colors">
+                        <td className="p-3 font-mono font-bold text-primary-900">
+                          <Link to={`/invoices/view/${inv._id}`} className="hover:underline">
+                            {inv.invoiceNumber}
                           </Link>
-
-                          {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
+                        </td>
+                        <td className="p-3 text-slate-600">{formatDate(inv.invoiceDate)}</td>
+                        <td className="p-3 font-medium text-slate-800 max-w-[240px] truncate" title={customerName}>
+                          {customerName}
+                        </td>
+                        <td className="p-3 font-mono text-slate-600">{inv.poNumber || '-'}</td>
+                        <td className="p-3 text-right font-medium">{inv.totalQuantity || 0}</td>
+                        <td className="p-3 text-right text-slate-600">
+                          {Number(inv.totalWeight || 0).toFixed(2)} kg
+                        </td>
+                        <td className="p-3 text-right text-slate-700 font-medium">
+                          ₹{formatCurrency(inv.taxableAmount)}
+                        </td>
+                        <td className="p-3 text-right font-bold text-slate-900 text-sm">
+                          ₹{formatCurrency(inv.roundedAmount)}
+                        </td>
+                        <td className="p-3 text-center">
+                          <Badge status={inv.invoiceStatus} />
+                        </td>
+                        <td className="p-3 text-right">
+                          <div className="flex items-center justify-end gap-1.5">
                             <Link
-                              to={`/invoices/edit/${inv._id}`}
-                              className="p-1 text-slate-500 hover:text-blue-600 rounded"
-                              title="Edit Draft"
+                              to={`/invoices/view/${inv._id}`}
+                              className="p-1 text-slate-500 hover:text-primary-900 rounded"
+                              title="View Invoice"
                             >
-                              <IoCreateOutline className="w-4 h-4" />
+                              <IoEyeOutline className="w-4 h-4" />
                             </Link>
-                          )}
 
-                          <button
-                            type="button"
-                            onClick={() => handleDownloadPdf(inv)}
-                            className="p-1 text-slate-500 hover:text-emerald-700 rounded"
-                            title="Download PDF"
-                          >
-                            <IoDownloadOutline className="w-4 h-4" />
-                          </button>
+                            {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
+                              <Link
+                                to={`/invoices/edit/${inv._id}`}
+                                className="p-1 text-slate-500 hover:text-blue-600 rounded"
+                                title="Edit Draft"
+                              >
+                                <IoCreateOutline className="w-4 h-4" />
+                              </Link>
+                            )}
 
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setConfirmModal({
-                                isOpen: true,
-                                type: 'duplicate',
-                                invoice: inv
-                              })
-                            }
-                            className="p-1 text-slate-500 hover:text-indigo-600 rounded"
-                            title="Duplicate as new draft"
-                          >
-                            <IoCopyOutline className="w-4 h-4" />
-                          </button>
+                            <button
+                              type="button"
+                              onClick={() => handleDownloadPdf(inv)}
+                              className="p-1 text-slate-500 hover:text-emerald-700 rounded"
+                              title="Download PDF"
+                            >
+                              <IoDownloadOutline className="w-4 h-4" />
+                            </button>
 
-                          {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
                             <button
                               type="button"
                               onClick={() =>
                                 setConfirmModal({
                                   isOpen: true,
-                                  type: 'approve',
+                                  type: 'duplicate',
                                   invoice: inv
                                 })
                               }
-                              className="p-1 text-slate-400 hover:text-emerald-600 rounded"
-                              title="Approve & Lock Invoice"
+                              className="p-1 text-slate-500 hover:text-indigo-600 rounded"
+                              title="Duplicate as new draft"
                             >
-                              <IoCheckmarkCircleOutline className="w-4 h-4" />
+                              <IoCopyOutline className="w-4 h-4" />
                             </button>
-                          )}
 
-                          {inv.invoiceStatus === 'Draft' && (
-                            <button
-                              type="button"
-                              onClick={() =>
-                                setConfirmModal({
-                                  isOpen: true,
-                                  type: 'delete',
-                                  invoice: inv
-                                })
-                              }
-                              className="p-1 text-slate-400 hover:text-rose-600 rounded"
-                              title="Delete Draft"
-                            >
-                              <IoTrashOutline className="w-4 h-4" />
-                            </button>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))
+                            {inv.invoiceStatus !== 'Approved' && inv.invoiceStatus !== 'Cancelled' && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setConfirmModal({
+                                    isOpen: true,
+                                    type: 'approve',
+                                    invoice: inv
+                                  })
+                                }
+                                className="p-1 text-slate-400 hover:text-emerald-600 rounded"
+                                title="Approve & Lock Invoice"
+                              >
+                                <IoCheckmarkCircleOutline className="w-4 h-4" />
+                              </button>
+                            )}
+
+                            {inv.invoiceStatus === 'Draft' && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  setConfirmModal({
+                                    isOpen: true,
+                                    type: 'delete',
+                                    invoice: inv
+                                  })
+                                }
+                                className="p-1 text-slate-400 hover:text-rose-600 rounded"
+                                title="Delete Draft"
+                              >
+                                <IoTrashOutline className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })
                 )}
               </tbody>
             </table>
           )}
         </div>
       </Card>
+
+      {/* Bottom filter drawer */}
+      {drawerOpen && (
+        <div className="fixed inset-0 z-50" role="dialog" aria-modal="true" aria-label="Filter invoices">
+          {/* Backdrop */}
+          <div
+            className={`absolute inset-0 bg-slate-900/50 transition-opacity duration-200 ${drawerShown ? 'opacity-100' : 'opacity-0'
+              }`}
+            onClick={closeDrawer}
+          />
+
+          {/* Sheet */}
+          <div
+            className={`absolute bottom-0 left-1/2 w-full max-w-2xl -translate-x-1/2 bg-white rounded-t-2xl shadow-2xl flex flex-col max-h-[85vh] transition-transform duration-200 ease-out ${drawerShown ? 'translate-y-0' : 'translate-y-full'
+              }`}
+            style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+          >
+            {/* Grab handle */}
+            <div className="flex justify-center pt-2.5">
+              <span className="h-1 w-10 rounded-full bg-slate-300" />
+            </div>
+
+            {/* Header */}
+            <div className="flex items-center justify-between gap-3 px-4 sm:px-5 pt-2 pb-3 border-b border-slate-200">
+              <h3 className="text-sm font-bold text-slate-800 whitespace-nowrap">Filter invoices</h3>
+              <button
+                type="button"
+                onClick={closeDrawer}
+                aria-label="Close filters"
+                className="p-1 text-slate-500 hover:text-slate-800 rounded"
+              >
+                <IoCloseCircleOutline className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Body (scrolls if the screen is short) */}
+            <div className="flex-1 overflow-y-auto overscroll-contain px-4 sm:px-5 py-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="min-w-0">
+                  <label className={filterLabelClass}>Status</label>
+                  <select
+                    value={draft.status}
+                    onChange={(e) => setDraft((d) => ({ ...d, status: e.target.value }))}
+                    className={filterInputClass}
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="Draft">Draft</option>
+                    <option value="Pending Approval">Pending Approval</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Cancelled">Cancelled</option>
+                  </select>
+                </div>
+
+                <div className="min-w-0">
+                  <label className={filterLabelClass}>Customer</label>
+                  <select
+                    value={draft.customer}
+                    onChange={(e) => setDraft((d) => ({ ...d, customer: e.target.value }))}
+                    className={`${filterInputClass} truncate`}
+                  >
+                    <option value="">All Customers</option>
+                    {customers.map((c) => (
+                      <option key={c._id} value={c._id}>
+                        {c.customerName}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="min-w-0">
+                  <label className={filterLabelClass}>From Date</label>
+                  <input
+                    type="date"
+                    value={draft.startDate}
+                    onChange={(e) => setDraft((d) => ({ ...d, startDate: e.target.value }))}
+                    className={filterInputClass}
+                  />
+                </div>
+
+                <div className="min-w-0">
+                  <label className={filterLabelClass}>To Date</label>
+                  <input
+                    type="date"
+                    value={draft.endDate}
+                    onChange={(e) => setDraft((d) => ({ ...d, endDate: e.target.value }))}
+                    className={filterInputClass}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Footer actions */}
+            <div className="flex items-center gap-2.5 px-4 sm:px-5 py-3 border-t border-slate-200 bg-slate-50 rounded-b-none">
+              <button
+                type="button"
+                onClick={clearFilters}
+                className="flex-1 sm:flex-none sm:min-w-[120px] text-xs font-semibold text-slate-700 hover:text-rose-600 px-3 py-2 border border-slate-300 rounded bg-white whitespace-nowrap"
+              >
+                Clear all
+              </button>
+              <button
+                type="button"
+                onClick={applyFilters}
+                className="flex-1 sm:flex-none sm:min-w-[140px] text-xs font-semibold text-white bg-primary-900 hover:bg-primary-800 px-3 py-2 rounded whitespace-nowrap sm:ml-auto"
+              >
+                Apply filters
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Confirmation Dialog */}
       <ConfirmationDialog
@@ -322,28 +853,28 @@ const InvoiceList = () => {
           confirmModal.type === 'approve'
             ? 'Approve Proforma Invoice'
             : confirmModal.type === 'duplicate'
-            ? 'Duplicate Proforma Invoice'
-            : confirmModal.type === 'cancel'
-            ? 'Cancel Proforma Invoice'
-            : 'Delete Draft Invoice'
+              ? 'Duplicate Proforma Invoice'
+              : confirmModal.type === 'cancel'
+                ? 'Cancel Proforma Invoice'
+                : 'Delete Draft Invoice'
         }
         message={
           confirmModal.type === 'approve'
             ? `Are you sure you want to approve and lock "${confirmModal.invoice?.invoiceNumber}"? Once approved, the calculations and snapshots cannot be altered.`
             : confirmModal.type === 'duplicate'
-            ? `Duplicate "${confirmModal.invoice?.invoiceNumber}"? A new draft invoice will be created with the next sequential PI number.`
-            : confirmModal.type === 'cancel'
-            ? `Cancel invoice "${confirmModal.invoice?.invoiceNumber}"?`
-            : `Permanently delete draft invoice "${confirmModal.invoice?.invoiceNumber}"?`
+              ? `Duplicate "${confirmModal.invoice?.invoiceNumber}"? A new draft invoice will be created with the next sequential PI number.`
+              : confirmModal.type === 'cancel'
+                ? `Cancel invoice "${confirmModal.invoice?.invoiceNumber}"?`
+                : `Permanently delete draft invoice "${confirmModal.invoice?.invoiceNumber}"?`
         }
         confirmText={
           confirmModal.type === 'approve'
             ? 'Approve & Lock'
             : confirmModal.type === 'duplicate'
-            ? 'Duplicate'
-            : confirmModal.type === 'cancel'
-            ? 'Cancel Invoice'
-            : 'Delete Draft'
+              ? 'Duplicate'
+              : confirmModal.type === 'cancel'
+                ? 'Cancel Invoice'
+                : 'Delete Draft'
         }
         confirmVariant={confirmModal.type === 'approve' ? 'success' : 'danger'}
       />

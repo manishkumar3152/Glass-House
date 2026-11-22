@@ -76,7 +76,7 @@ const GlassRates = () => {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded border border-slate-200 shadow-xs">
         <div>
           <h2 className="text-xl font-bold text-slate-800">Glass Rate Master</h2>
           <p className="text-xs text-slate-500 mt-1">

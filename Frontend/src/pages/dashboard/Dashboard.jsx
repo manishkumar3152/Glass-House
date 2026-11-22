@@ -91,7 +91,7 @@ const Dashboard = () => {
   return (
     <div className="space-y-6">
       {/* Top Banner & Quick Actions */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded-lg border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-5 rounded border border-slate-200 shadow-xs">
         <div>
           <h2 className="text-lg sm:text-xl font-bold text-slate-800">Proforma Invoice Overview</h2>
           <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
@@ -101,14 +101,14 @@ const Dashboard = () => {
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             to="/customers"
-            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold rounded-md border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
+            className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-3.5 sm:py-2 text-xs font-semibold rounded border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors"
           >
             <IoPeopleOutline className="w-4 h-4 text-slate-500" />
             Customers
           </Link>
           <Link
             to="/invoices/create"
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold rounded-md bg-primary-900 text-white hover:bg-primary-800 transition-colors shadow-xs"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 text-xs font-semibold rounded bg-primary-900 text-white hover:bg-primary-800 transition-colors shadow-xs"
           >
             <IoAddOutline className="w-4 h-4" />
             Create Proforma Invoice
@@ -128,7 +128,7 @@ const Dashboard = () => {
                 </p>
                 <p className="text-xl font-bold text-slate-900 mt-1">{card.value}</p>
               </div>
-              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${card.color}`}>
+              <div className={`w-10 h-10 rounded flex items-center justify-center ${card.color}`}>
                 <Icon className="w-5 h-5" />
               </div>
             </div>
@@ -150,7 +150,7 @@ const Dashboard = () => {
             <div className="space-y-3">
               {charts?.monthlyTrend && charts.monthlyTrend.length > 0 ? (
                 charts.monthlyTrend.map((m, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded-md border border-slate-100 text-xs">
+                  <div key={idx} className="flex items-center justify-between p-3 bg-slate-50 rounded border border-slate-100 text-xs">
                     <span className="font-semibold text-slate-800 w-28">{m.label}</span>
                     <div className="flex-1 mx-4 bg-slate-200 h-2 rounded-full overflow-hidden">
                       <div
@@ -181,7 +181,7 @@ const Dashboard = () => {
             <div className="space-y-3">
               {charts?.customerDistribution && charts.customerDistribution.length > 0 ? (
                 charts.customerDistribution.map((c, idx) => (
-                  <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded-md border border-slate-100 text-xs">
+                  <div key={idx} className="flex items-center justify-between p-2.5 bg-slate-50 rounded border border-slate-100 text-xs">
                     <div>
                       <div className="font-semibold text-slate-900">{c._id || 'Unknown'}</div>
                       <div className="text-[10px] text-slate-400">{c.invoicesCount} Invoices</div>
