@@ -220,6 +220,14 @@ const CreateInvoice = () => {
     setGlassItems(glassItems.filter((_, idx) => idx !== index));
   };
 
+  const handleBulkRemoveGlassItems = (indices) => {
+    if (glassItems.length - indices.length < 1) {
+      toast.error('An invoice must have at least one glass item');
+      return;
+    }
+    setGlassItems(glassItems.filter((_, idx) => !indices.includes(idx)));
+  };
+
   // Processing Items handlers
   const handleProcessingItemChange = (index, updatedItem) => {
     const updated = [...processingItems];
@@ -244,6 +252,10 @@ const CreateInvoice = () => {
 
   const handleRemoveProcessingItem = (index) => {
     setProcessingItems(processingItems.filter((_, idx) => idx !== index));
+  };
+
+  const handleBulkRemoveProcessingItems = (indices) => {
+    setProcessingItems(processingItems.filter((_, idx) => !indices.includes(idx)));
   };
 
   // Save handler
@@ -333,6 +345,7 @@ const CreateInvoice = () => {
             onItemChange={handleGlassItemChange}
             onAddItem={handleAddGlassItem}
             onRemoveItem={handleRemoveGlassItem}
+            onBulkRemove={handleBulkRemoveGlassItems}
           />
 
           {/* Processing Charges */}
@@ -343,6 +356,7 @@ const CreateInvoice = () => {
             onChange={handleProcessingItemChange}
             onAddItem={handleAddProcessingItem}
             onRemoveItem={handleRemoveProcessingItem}
+            onBulkRemove={handleBulkRemoveProcessingItems}
           />
 
           {/* Additional Charges */}

@@ -5,7 +5,9 @@ const {
   getProcessingChargeById,
   createProcessingCharge,
   updateProcessingCharge,
-  deleteProcessingCharge
+  deleteProcessingCharge,
+  bulkUpdateChargeStatus,
+  bulkDeleteCharges
 } = require('../controllers/processingChargeController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const { processingChargeRules } = require('../validators/masterValidator');
@@ -17,6 +19,10 @@ router
   .route('/')
   .get(getProcessingCharges)
   .post(authorize('admin', 'super_admin'), processingChargeRules, validate, createProcessingCharge);
+
+// Bulk operations (must be before /:id)
+router.post('/bulk-status', authorize('admin', 'super_admin'), bulkUpdateChargeStatus);
+router.post('/bulk-delete', authorize('admin', 'super_admin'), bulkDeleteCharges);
 
 router
   .route('/:id')

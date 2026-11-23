@@ -70,10 +70,47 @@ const deleteProcessingCharge = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc    Bulk update processing charge status
+// @route   POST /api/processing-charges/bulk-status
+// @access  Private (Admin)
+const bulkUpdateChargeStatus = asyncHandler(async (req, res, next) => {
+  const { ids, status } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of charge IDs'));
+  }
+  if (!status) {
+    return next(new ApiError(400, 'Please provide status'));
+  }
+
+  await ProcessingCharge.updateMany({ _id: { $in: ids } }, { $set: { status } });
+
+  res.status(200).json(
+    new ApiResponse(200, { count: ids.length, status }, `Status updated to "${status}" for ${ids.length} charge(s)`)
+  );
+});
+
+// @desc    Bulk delete processing charges
+// @route   POST /api/processing-charges/bulk-delete
+// @access  Private (Admin)
+const bulkDeleteCharges = asyncHandler(async (req, res, next) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of charge IDs'));
+  }
+
+  const result = await ProcessingCharge.deleteMany({ _id: { $in: ids } });
+
+  res.status(200).json(
+    new ApiResponse(200, { deletedCount: result.deletedCount }, `Deleted ${result.deletedCount} charge(s) successfully`)
+  );
+});
+
 module.exports = {
   getProcessingCharges,
   getProcessingChargeById,
   createProcessingCharge,
   updateProcessingCharge,
-  deleteProcessingCharge
+  deleteProcessingCharge,
+  bulkUpdateChargeStatus,
+  bulkDeleteCharges
 };

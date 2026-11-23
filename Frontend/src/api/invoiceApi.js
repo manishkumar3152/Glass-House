@@ -14,7 +14,11 @@ export const invoiceApi = {
 
   calculateLive: (data) => axiosInstance.post(API_ENDPOINTS.INVOICES.CALCULATE, data),
   generatePdf: (id) => axiosInstance.post(API_ENDPOINTS.INVOICES.GENERATE_PDF(id)),
+  bulkUpdateStatus: (ids, status) => axiosInstance.post(`${API_ENDPOINTS.INVOICES.BASE}/bulk-status`, { ids, status }),
+  bulkDelete: (ids) => axiosInstance.post(`${API_ENDPOINTS.INVOICES.BASE}/bulk-delete`, { ids }),
 
   getPdfUrl: (id) => `${API_BASE_URL}${API_ENDPOINTS.INVOICES.PDF(id)}`,
   getPreviewHtmlUrl: (id) => `${API_BASE_URL}${API_ENDPOINTS.INVOICES.PREVIEW_HTML(id)}`
 };
+
+export default invoiceApi;

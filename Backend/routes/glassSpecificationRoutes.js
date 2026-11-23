@@ -5,7 +5,9 @@ const {
   getGlassSpecificationById,
   createGlassSpecification,
   updateGlassSpecification,
-  deleteGlassSpecification
+  deleteGlassSpecification,
+  bulkUpdateSpecStatus,
+  bulkDeleteSpecs
 } = require('../controllers/glassSpecificationController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const { glassSpecificationRules } = require('../validators/masterValidator');
@@ -17,6 +19,10 @@ router
   .route('/')
   .get(getGlassSpecifications)
   .post(authorize('admin', 'super_admin'), glassSpecificationRules, validate, createGlassSpecification);
+
+// Bulk operations (must be before /:id)
+router.post('/bulk-status', authorize('admin', 'super_admin'), bulkUpdateSpecStatus);
+router.post('/bulk-delete', authorize('admin', 'super_admin'), bulkDeleteSpecs);
 
 router
   .route('/:id')

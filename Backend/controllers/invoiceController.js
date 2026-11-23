@@ -166,6 +166,41 @@ const duplicateInvoice = asyncHandler(async (req, res) => {
   );
 });
 
+// @desc    Bulk update invoice status
+// @route   POST /api/invoices/bulk-status
+// @access  Private
+const bulkUpdateInvoiceStatus = asyncHandler(async (req, res, next) => {
+  const { ids, status } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of invoice IDs'));
+  }
+  if (!status) {
+    return next(new ApiError(400, 'Please provide status'));
+  }
+
+  await Invoice.updateMany({ _id: { $in: ids } }, { $set: { invoiceStatus: status } });
+
+  res.status(200).json(
+    new ApiResponse(200, { count: ids.length, status }, `Status updated to "${status}" for ${ids.length} invoice(s)`)
+  );
+});
+
+// @desc    Bulk delete invoices
+// @route   POST /api/invoices/bulk-delete
+// @access  Private
+const bulkDeleteInvoices = asyncHandler(async (req, res, next) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of invoice IDs'));
+  }
+
+  const result = await Invoice.deleteMany({ _id: { $in: ids } });
+
+  res.status(200).json(
+    new ApiResponse(200, { deletedCount: result.deletedCount }, `Deleted ${result.deletedCount} invoice(s) successfully`)
+  );
+});
+
 module.exports = {
   getInvoices,
   getInvoiceById,
@@ -174,5 +209,7 @@ module.exports = {
   deleteInvoice,
   approveInvoice,
   cancelInvoice,
-  duplicateInvoice
+  duplicateInvoice,
+  bulkUpdateInvoiceStatus,
+  bulkDeleteInvoices
 };

@@ -5,7 +5,9 @@ const {
   getCustomerById,
   createCustomer,
   updateCustomer,
-  deleteCustomer
+  deleteCustomer,
+  bulkUpdateCustomerStatus,
+  bulkDeleteCustomers
 } = require('../controllers/customerController');
 const { protect, authorize } = require('../middleware/authMiddleware');
 const { customerValidationRules } = require('../validators/customerValidator');
@@ -17,6 +19,10 @@ router
   .route('/')
   .get(getCustomers)
   .post(customerValidationRules, validate, createCustomer);
+
+// Bulk operations (must be before /:id)
+router.post('/bulk-status', bulkUpdateCustomerStatus);
+router.post('/bulk-delete', authorize('admin', 'super_admin'), bulkDeleteCustomers);
 
 router
   .route('/:id')

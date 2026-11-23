@@ -109,10 +109,47 @@ const deleteCustomer = asyncHandler(async (req, res, next) => {
   );
 });
 
+// @desc    Bulk update customer status
+// @route   POST /api/customers/bulk-status
+// @access  Private
+const bulkUpdateCustomerStatus = asyncHandler(async (req, res, next) => {
+  const { ids, status } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of customer IDs'));
+  }
+  if (!status) {
+    return next(new ApiError(400, 'Please provide status'));
+  }
+
+  await Customer.updateMany({ _id: { $in: ids } }, { $set: { status } });
+
+  res.status(200).json(
+    new ApiResponse(200, { count: ids.length, status }, `Status updated for ${ids.length} customer(s)`)
+  );
+});
+
+// @desc    Bulk delete customers
+// @route   POST /api/customers/bulk-delete
+// @access  Private (Admin)
+const bulkDeleteCustomers = asyncHandler(async (req, res, next) => {
+  const { ids } = req.body;
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return next(new ApiError(400, 'Please provide an array of customer IDs'));
+  }
+
+  const result = await Customer.deleteMany({ _id: { $in: ids } });
+
+  res.status(200).json(
+    new ApiResponse(200, { deletedCount: result.deletedCount }, `Deleted ${result.deletedCount} customer(s) successfully`)
+  );
+});
+
 module.exports = {
   getCustomers,
   getCustomerById,
   createCustomer,
   updateCustomer,
-  deleteCustomer
+  deleteCustomer,
+  bulkUpdateCustomerStatus,
+  bulkDeleteCustomers
 };

@@ -1,174 +1,14 @@
-// import React, { useEffect, useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { Link } from 'react-router-dom';
-// import { fetchCustomers, deleteCustomer } from '../../redux/slices/customerSlice';
-// import Card from '../../components/common/Card';
-// import Button from '../../components/common/Button';
-// import Input from '../../components/common/Input';
-// import ConfirmationDialog from '../../components/common/ConfirmationDialog';
-// import Loader from '../../components/common/Loader';
-// import { IoAddOutline, IoSearchOutline, IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
-
-// const CustomerList = () => {
-//   const dispatch = useDispatch();
-//   const { customers, pagination, loading } = useSelector((state) => state.customers);
-//   const [searchTerm, setSearchTerm] = useState('');
-//   const [deleteTarget, setDeleteTarget] = useState(null);
-
-//   useEffect(() => {
-//     dispatch(fetchCustomers({ search: searchTerm }));
-//   }, [dispatch, searchTerm]);
-
-//   const handleDelete = async () => {
-//     if (deleteTarget) {
-//       await dispatch(deleteCustomer(deleteTarget._id));
-//       setDeleteTarget(null);
-//     }
-//   };
-
-//   return (
-//     <div className="space-y-5">
-//       {/* Top Header */}
-//       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 ">
-//         <div>
-//           <h2 className="text-lg sm:text-xl font-bold text-slate-800">Customer Management</h2>
-//           <p className="text-xs text-slate-500 mt-0.5 sm:mt-1">
-//             Maintain customer billing addresses, delivery addresses, and GST credentials.
-//           </p>
-//         </div>
-//         <div className="self-start sm:self-auto">
-//           <Link to="/customers/create">
-//             <Button variant="primary" icon={IoAddOutline} size="sm">
-//               Add New Customer
-//             </Button>
-//           </Link>
-//         </div>
-//       </div>
-
-//       {/* Search & Filters */}
-//       <Card noPadding>
-//         <div className="p-3 sm:p-4 border-b border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
-//           <div className="relative w-full sm:max-w-md">
-//             <IoSearchOutline className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-//             <input
-//               type="text"
-//               placeholder="Search by customer name, phone, GSTIN, or city..."
-//               value={searchTerm}
-//               onChange={(e) => setSearchTerm(e.target.value)}
-//               className="w-full pl-9 pr-4 py-1.5 text-xs rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-primary-500 bg-white"
-//             />
-//           </div>
-//           <div className="text-xs text-slate-500 font-medium self-end sm:self-auto">
-//             Total Customers: {pagination?.total || customers.length}
-//           </div>
-//         </div>
-
-//         {/* Customer Table */}
-//         <div className="overflow-x-auto">
-//           {loading && customers.length === 0 ? (
-//             <Loader text="Loading customers..." />
-//           ) : (
-//             <table className="w-full text-left border-collapse text-xs min-w-[760px]">
-//               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
-//                 <tr>
-//                   <th className="p-3">Customer Name</th>
-//                   <th className="p-3">Contact Person</th>
-//                   <th className="p-3">Phone</th>
-//                   <th className="p-3">Email</th>
-//                   <th className="p-3">GSTIN</th>
-//                   <th className="p-3">City / State</th>
-//                   <th className="p-3 text-center">Type</th>
-//                   <th className="p-3 text-right">Actions</th>
-//                 </tr>
-//               </thead>
-//               <tbody className="divide-y divide-slate-100">
-//                 {customers.length === 0 ? (
-//                   <tr>
-//                     <td colSpan={8} className="p-8 text-center text-slate-400 italic">
-//                       No customers found. Click &quot;Add New Customer&quot; to register your first client.
-//                     </td>
-//                   </tr>
-//                 ) : (
-//                   customers.map((c) => (
-//                     <tr key={c._id} className="hover:bg-slate-50 transition-colors">
-//                       <td className="p-3 font-semibold text-slate-900">
-//                         <div>{c.customerName}</div>
-//                         {c.glassRates && c.glassRates.length > 0 ? (
-//                           <span className="inline-block mt-0.5 px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
-//                             {c.glassRates.length} Custom Rate{c.glassRates.length > 1 ? 's' : ''}
-//                           </span>
-//                         ) : (
-//                           <span className="inline-block mt-0.5 text-[10px] text-slate-400 font-normal">
-//                             Default Rates
-//                           </span>
-//                         )}
-//                       </td>
-//                       <td className="p-3 text-slate-700">{c.contactPerson || 'N/A'}</td>
-//                       <td className="p-3 text-slate-700 font-mono">{c.phone || 'N/A'}</td>
-//                       <td className="p-3 text-slate-600">{c.email || 'N/A'}</td>
-//                       <td className="p-3 font-mono text-slate-700 font-medium">{c.gstin || 'Unregistered'}</td>
-//                       <td className="p-3 text-slate-600">
-//                         {c.city ? `${c.city}, ` : ''}{c.state || 'N/A'}
-//                       </td>
-//                       <td className="p-3 text-center">
-//                         <span className="px-2 py-0.5 rounded bg-slate-100 text-slate-700 font-medium border border-slate-200">
-//                           {c.customerType || 'B2B'}
-//                         </span>
-//                       </td>
-//                       <td className="p-3 text-right">
-//                         <div className="flex items-center justify-end gap-2">
-//                           <Link
-//                             to={`/customers/edit/${c._id}`}
-//                             className="p-1 text-slate-500 hover:text-primary-900 rounded transition-colors"
-//                             title="Edit Customer"
-//                           >
-//                             <IoCreateOutline className="w-4 h-4" />
-//                           </Link>
-//                           <button
-//                             type="button"
-//                             onClick={() => setDeleteTarget(c)}
-//                             className="p-1 text-slate-400 hover:text-rose-600 rounded transition-colors"
-//                             title="Delete Customer"
-//                           >
-//                             <IoTrashOutline className="w-4 h-4" />
-//                           </button>
-//                         </div>
-//                       </td>
-//                     </tr>
-//                   ))
-//                 )}
-//               </tbody>
-//             </table>
-//           )}
-//         </div>
-//       </Card>
-
-//       {/* Delete Confirmation */}
-//       <ConfirmationDialog
-//         isOpen={!!deleteTarget}
-//         onClose={() => setDeleteTarget(null)}
-//         onConfirm={handleDelete}
-//         title="Delete Customer"
-//         message={`Are you sure you want to delete "${deleteTarget?.customerName}"? Existing invoices with saved customer snapshots will remain unaffected.`}
-//         confirmText="Delete Customer"
-//       />
-//     </div>
-//   );
-// };
-
-// export default CustomerList;
-
-
-
-
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import { fetchCustomers, deleteCustomer } from '../../redux/slices/customerSlice';
+import { customerApi } from '../../api/customerApi';
 import Card from '../../components/common/Card';
 import Button from '../../components/common/Button';
 import ConfirmationDialog from '../../components/common/ConfirmationDialog';
+import SelectionToolbar from '../../components/common/SelectionToolbar';
 import Loader from '../../components/common/Loader';
 import {
   IoAddOutline,
@@ -205,6 +45,10 @@ const CustomerList = () => {
 
   const [deleteTarget, setDeleteTarget] = useState(null);
 
+  // Selection & bulk action state
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [bulkLoading, setBulkLoading] = useState(false);
+
   // Bottom drawer state
   const [drawerOpen, setDrawerOpen] = useState(false); // mounted
   const [drawerShown, setDrawerShown] = useState(false); // slide-in animation
@@ -225,6 +69,7 @@ const CustomerList = () => {
     if (filters.customerType) params.customerType = filters.customerType;
     if (filters.state) params.state = filters.state;
     dispatch(fetchCustomers(params));
+    setSelectedIds([]);
   }, [dispatch, search, filters.customerType, filters.state]);
 
   // "Rates" filter is applied on the client, since it depends on glassRates length
@@ -281,6 +126,60 @@ const CustomerList = () => {
     if (deleteTarget) {
       await dispatch(deleteCustomer(deleteTarget._id));
       setDeleteTarget(null);
+    }
+  };
+
+  // Selection handlers
+  const toggleSelect = (id) => {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (visibleCustomers.length > 0 && selectedIds.length === visibleCustomers.length) {
+      setSelectedIds([]);
+    } else {
+      setSelectedIds(visibleCustomers.map((c) => c._id));
+    }
+  };
+
+  // Bulk actions
+  const handleBulkStatusChange = async (newStatus) => {
+    if (selectedIds.length === 0) return;
+    setBulkLoading(true);
+    try {
+      await customerApi.bulkUpdateStatus(selectedIds, newStatus);
+      toast.success(`Updated status to "${newStatus}" for ${selectedIds.length} customer(s)`);
+      setSelectedIds([]);
+      dispatch(fetchCustomers({
+        search: search || undefined,
+        customerType: filters.customerType || undefined,
+        state: filters.state || undefined
+      }));
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || 'Failed to update customer statuses');
+    } finally {
+      setBulkLoading(false);
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.length === 0) return;
+    setBulkLoading(true);
+    try {
+      const res = await customerApi.bulkDelete(selectedIds);
+      toast.success(res.data?.message || `Deleted ${selectedIds.length} customer(s) successfully`);
+      setSelectedIds([]);
+      dispatch(fetchCustomers({
+        search: search || undefined,
+        customerType: filters.customerType || undefined,
+        state: filters.state || undefined
+      }));
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message || 'Failed to delete selected customers');
+    } finally {
+      setBulkLoading(false);
     }
   };
 
@@ -374,6 +273,15 @@ const CustomerList = () => {
             <table className="w-full text-left border-collapse text-xs min-w-[1100px] whitespace-nowrap">
               <thead className="bg-slate-100 text-slate-700 uppercase font-semibold border-b border-slate-200">
                 <tr>
+                  <th className="p-3 w-10 text-center">
+                    <input
+                      type="checkbox"
+                      checked={visibleCustomers.length > 0 && selectedIds.length === visibleCustomers.length}
+                      onChange={toggleSelectAll}
+                      className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
+                      title="Select all customers"
+                    />
+                  </th>
                   <th className="p-3">Customer Name</th>
                   <th className="p-3">Contact Person</th>
                   <th className="p-3">Phone</th>
@@ -381,21 +289,37 @@ const CustomerList = () => {
                   <th className="p-3">GSTIN</th>
                   <th className="p-3">City / State</th>
                   <th className="p-3 text-center">Type</th>
+                  <th className="p-3 text-center">Status</th>
                   <th className="p-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {visibleCustomers.length === 0 ? (
                   <tr>
-                    <td colSpan={8} className="p-8 text-center text-slate-400 italic">
+                    <td colSpan={10} className="p-8 text-center text-slate-400 italic">
                       {search || activeFilterCount > 0
                         ? 'No customers match the search or filters.'
                         : 'No customers found. Click "Add New Customer" to register your first client.'}
                     </td>
                   </tr>
                 ) : (
-                  visibleCustomers.map((c) => (
-                    <tr key={c._id} className="hover:bg-slate-50 transition-colors">
+                  visibleCustomers.map((c) => {
+                    const isSelected = selectedIds.includes(c._id);
+                    return (
+                    <tr
+                      key={c._id}
+                      className={`transition-colors ${
+                        isSelected ? 'bg-primary-50/70 hover:bg-primary-50' : 'hover:bg-slate-50'
+                      }`}
+                    >
+                      <td className="p-3 w-10 text-center">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleSelect(c._id)}
+                          className="w-4 h-4 rounded border-slate-300 text-primary-600 focus:ring-primary-500 cursor-pointer"
+                        />
+                      </td>
                       <td className="p-3 font-semibold text-slate-900">
                         <div>{c.customerName}</div>
                         {c.glassRates && c.glassRates.length > 0 ? (
@@ -423,6 +347,17 @@ const CustomerList = () => {
                           {c.customerType || 'B2B'}
                         </span>
                       </td>
+                      <td className="p-3 text-center">
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                            c.status === 'Inactive'
+                              ? 'bg-rose-100 text-rose-800 border border-rose-200'
+                              : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                          }`}
+                        >
+                          {c.status || 'Active'}
+                        </span>
+                      </td>
                       <td className="p-3 text-right">
                         <div className="flex items-center justify-end gap-2">
                           <Link
@@ -443,13 +378,29 @@ const CustomerList = () => {
                         </div>
                       </td>
                     </tr>
-                  ))
-                )}
+                  );
+                }))}
               </tbody>
             </table>
           )}
         </div>
       </Card>
+
+      {/* Floating Selection Toolbar for Bulk Operations */}
+      <SelectionToolbar
+        selectedCount={selectedIds.length}
+        totalCount={visibleCustomers.length}
+        itemLabel="customers"
+        statusOptions={['Active', 'Inactive']}
+        statusLabel="Change Status"
+        onStatusChange={handleBulkStatusChange}
+        onDelete={handleBulkDelete}
+        deleteLabel={`Delete (${selectedIds.length})`}
+        deleteLoading={bulkLoading}
+        statusLoading={bulkLoading}
+        onClearSelection={() => setSelectedIds([])}
+        onSelectAll={() => setSelectedIds(visibleCustomers.map((c) => c._id))}
+      />
 
       {/* Bottom filter drawer */}
       {drawerOpen && (

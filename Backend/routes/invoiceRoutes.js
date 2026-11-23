@@ -8,7 +8,9 @@ const {
   deleteInvoice,
   approveInvoice,
   cancelInvoice,
-  duplicateInvoice
+  duplicateInvoice,
+  bulkUpdateInvoiceStatus,
+  bulkDeleteInvoices
 } = require('../controllers/invoiceController');
 const {
   getInvoicePdf,
@@ -25,6 +27,10 @@ router
   .route('/')
   .get(getInvoices)
   .post(invoiceValidationRules, validate, createInvoice);
+
+// Bulk operations (must be before /:id)
+router.post('/bulk-status', bulkUpdateInvoiceStatus);
+router.post('/bulk-delete', bulkDeleteInvoices);
 
 router
   .route('/:id')

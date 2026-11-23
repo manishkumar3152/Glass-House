@@ -56,7 +56,7 @@ const ViewInvoice = () => {
   return (
     <div className="space-y-5 pb-16">
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 sm:p-4 rounded border border-slate-200 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 ">
         <div className="flex items-center gap-3">
           <Link
             to="/invoices"

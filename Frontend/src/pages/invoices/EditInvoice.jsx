@@ -233,6 +233,14 @@ const EditInvoice = () => {
     setGlassItems(glassItems.filter((_, idx) => idx !== index));
   };
 
+  const handleBulkRemoveGlassItems = (indices) => {
+    if (glassItems.length - indices.length < 1) {
+      toast.error('Invoice must retain at least one glass item');
+      return;
+    }
+    setGlassItems(glassItems.filter((_, idx) => !indices.includes(idx)));
+  };
+
   const handleProcessingItemChange = (index, updatedItem) => {
     const updated = [...processingItems];
     updated[index] = updatedItem;
@@ -256,6 +264,10 @@ const EditInvoice = () => {
 
   const handleRemoveProcessingItem = (index) => {
     setProcessingItems(processingItems.filter((_, idx) => idx !== index));
+  };
+
+  const handleBulkRemoveProcessingItems = (indices) => {
+    setProcessingItems(processingItems.filter((_, idx) => !indices.includes(idx)));
   };
 
   const handleSave = async (status = formData.invoiceStatus) => {
@@ -338,6 +350,7 @@ const EditInvoice = () => {
             onItemChange={handleGlassItemChange}
             onAddItem={handleAddGlassItem}
             onRemoveItem={handleRemoveGlassItem}
+            onBulkRemove={handleBulkRemoveGlassItems}
           />
           <ProcessingChargesTable
             items={calculated.processingItems}
@@ -346,6 +359,7 @@ const EditInvoice = () => {
             onChange={handleProcessingItemChange}
             onAddItem={handleAddProcessingItem}
             onRemoveItem={handleRemoveProcessingItem}
+            onBulkRemove={handleBulkRemoveProcessingItems}
           />
           <AdditionalCharges
             charges={calculated.additionalCharges}
